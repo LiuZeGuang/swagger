@@ -17,7 +17,10 @@
         ],
         "responses": {
           "200": {
-            "description": "200 response" 
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
           }
         }
       }
@@ -43,10 +46,7 @@
         ],
         "responses": {
           "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/Empty"
-            }
+            "description": "200 response"
           }
         }
       }

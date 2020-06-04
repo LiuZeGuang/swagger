@@ -51,12 +51,7 @@
               "$ref": "#/definitions/Empty"
             }
           }
-        },
-        "security": [
-          {
-            "api_key": []
-          }
-        ]
+        }
       }
     },
     "/demo/petstore/{proxy+}": {

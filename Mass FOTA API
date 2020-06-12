@@ -4,7 +4,7 @@
 		"version": "1.0",
 		"title": "Mass FOTA API"
 	},
-	"host": "localhost:8080",
+	"host": "dev.fleetup.cc",
 	"basePath": "/",
 	"tags": [
 		{

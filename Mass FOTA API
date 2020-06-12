@@ -1,1297 +1,1196 @@
 {
-	"swagger": "2.0",
-	"info": {
-		"version": "1.0",
-		"title": "Mass FOTA API"
-	},
-	"host": "dev.fleetup.cc",
-	"basePath": "/",
-	"tags": [
-		{
-			"name": "fota-controller",
-			"description": "Fota Controller"
-		}
-	],
-	"paths": {
-		"/operator/admin/fota/device": {
-			"post": {
-				"tags": [
-					"fota-controller"
-				],
-				"summary": "addFotaStatus",
-				"operationId": "addFotaStatusUsingPOST",
-				"consumes": [
-					"application/json"
-				],
-				"produces": [
-					"*/*"
-				],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "fotaCommandList",
-						"description": "fotaCommandList",
-						"required": true,
-						"schema": {
-							"type": "array",
-							"items": {
-								"$ref": "#/definitions/AdmDevFotaCommand"
-							}
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"schema": {
-							"$ref": "#/definitions/ResponseEntity"
-						}
-					},
-					"201": {
-						"description": "Created"
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "Not Found"
-					}
-				},
-				"deprecated": false
-			}
-		},
-		"/operator/admin/fota/device/{devId}": {
-			"get": {
-				"tags": [
-					"fota-controller"
-				],
-				"summary": "queryFotaStatus",
-				"operationId": "queryFotaStatusUsingGET",
-				"produces": [
-					"*/*"
-				],
-				"parameters": [
-					{
-						"name": "devId",
-						"in": "path",
-						"description": "devId",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"schema": {
-							"$ref": "#/definitions/AdmDevFota"
-						}
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "Not Found"
-					}
-				},
-				"deprecated": false
-			},
-			"put": {
-				"tags": [
-					"fota-controller"
-				],
-				"summary": "updateFotaStatus",
-				"operationId": "updateFotaStatusUsingPUT",
-				"consumes": [
-					"application/json"
-				],
-				"produces": [
-					"*/*"
-				],
-				"parameters": [
-					{
-						"name": "commandExpireDate",
-						"in": "query",
-						"description": "commandExpireDate",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "devId",
-						"in": "path",
-						"description": "devId",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "firmwareId",
-						"in": "query",
-						"description": "firmwareId",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "status",
-						"in": "query",
-						"description": "status",
-						"required": false,
-						"type": "integer",
-						"format": "int32"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"schema": {
-							"$ref": "#/definitions/ResponseEntity"
-						}
-					},
-					"201": {
-						"description": "Created"
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "Not Found"
-					}
-				},
-				"deprecated": false
-			}
-		},
-		"/operator/admin/fota/deviceTypes": {
-			"get": {
-				"tags": [
-					"fota-controller"
-				],
-				"summary": "getDeviceType",
-				"operationId": "getDeviceTypeUsingGET",
-				"produces": [
-					"*/*"
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"schema": {
-							"type": "array",
-							"items": {
-								"$ref": "#/definitions/StandardCode"
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "Not Found"
-					}
-				},
-				"deprecated": false
-			}
-		},
-		"/operator/admin/fota/devices": {
-			"get": {
-				"tags": [
-					"fota-controller"
-				],
-				"summary": "queryFotaStatusList",
-				"operationId": "queryFotaStatusListUsingGET",
-				"produces": [
-					"*/*"
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"schema": {
-							"type": "array",
-							"items": {
-								"$ref": "#/definitions/AdmDevFota"
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "Not Found"
-					}
-				},
-				"deprecated": false
-			}
-		},
-		"/operator/admin/fota/devices/{deviceTypes}": {
-			"get": {
-				"tags": [
-					"fota-controller"
-				],
-				"summary": "queryByCompNameOrFwVer",
-				"operationId": "queryByCompNameOrFwVerUsingGET",
-				"produces": [
-					"*/*"
-				],
-				"parameters": [
-					{
-						"name": "companyName",
-						"in": "query",
-						"description": "companyName",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "currentFirmware",
-						"in": "query",
-						"description": "currentFirmware",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "devId",
-						"in": "query",
-						"description": "devId",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "deviceTypes",
-						"in": "path",
-						"description": "deviceTypes",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "limit",
-						"in": "query",
-						"description": "limit",
-						"required": true,
-						"type": "integer",
-						"format": "int32"
-					},
-					{
-						"name": "offset",
-						"in": "query",
-						"description": "offset",
-						"required": true,
-						"type": "integer",
-						"format": "int32"
-					},
-					{
-						"name": "statuses",
-						"in": "query",
-						"description": "statuses",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "upgradingFirmware",
-						"in": "query",
-						"description": "upgradingFirmware",
-						"required": false,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"schema": {
-							"$ref": "#/definitions/Pagination«AdmDevFotaDto»"
-						}
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "Not Found"
-					}
-				},
-				"deprecated": false
-			}
-		},
-		"/operator/admin/fota/firmware": {
-			"post": {
-				"tags": [
-					"fota-controller"
-				],
-				"summary": "addFirmware",
-				"operationId": "addFirmwareUsingPOST",
-				"consumes": [
-					"application/json"
-				],
-				"produces": [
-					"*/*"
-				],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "admFirmwareCommand",
-						"description": "admFirmwareCommand",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/AdmFirmwareCommand"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"schema": {
-							"$ref": "#/definitions/ResponseEntity"
-						}
-					},
-					"201": {
-						"description": "Created"
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "Not Found"
-					}
-				},
-				"deprecated": false
-			}
-		},
-		"/operator/admin/fota/firmware-files": {
-			"get": {
-				"tags": [
-					"fota-controller"
-				],
-				"summary": "queryFirmwareInfo",
-				"operationId": "queryFirmwareInfoUsingGET",
-				"produces": [
-					"*/*"
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"schema": {
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "Not Found"
-					}
-				},
-				"deprecated": false
-			}
-		},
-		"/operator/admin/fota/firmware/{firmwareId}": {
-			"get": {
-				"tags": [
-					"fota-controller"
-				],
-				"summary": "queryFirmware",
-				"operationId": "queryFirmwareUsingGET",
-				"produces": [
-					"*/*"
-				],
-				"parameters": [
-					{
-						"name": "firmwareId",
-						"in": "path",
-						"description": "firmwareId",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"schema": {
-							"$ref": "#/definitions/AdmFirmware"
-						}
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "Not Found"
-					}
-				},
-				"deprecated": false
-			},
-			"put": {
-				"tags": [
-					"fota-controller"
-				],
-				"summary": "updateFirmware",
-				"operationId": "updateFirmwareUsingPUT",
-				"consumes": [
-					"application/json"
-				],
-				"produces": [
-					"*/*"
-				],
-				"parameters": [
-					{
-						"name": "description",
-						"in": "query",
-						"description": "description",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "deviceTypes",
-						"in": "query",
-						"description": "deviceTypes",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "firmwareId",
-						"in": "path",
-						"description": "firmwareId",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "firmwareStage",
-						"in": "query",
-						"description": "firmwareStage",
-						"required": false,
-						"type": "integer",
-						"format": "int32"
-					},
-					{
-						"name": "firmwareVersion",
-						"in": "query",
-						"description": "firmwareVersion",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "status",
-						"in": "query",
-						"description": "status",
-						"required": false,
-						"type": "integer",
-						"format": "int32"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"schema": {
-							"$ref": "#/definitions/ResponseEntity"
-						}
-					},
-					"201": {
-						"description": "Created"
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "Not Found"
-					}
-				},
-				"deprecated": false
-			}
-		},
-		"/operator/admin/fota/firmware/{firmwareId}/download": {
-			"get": {
-				"tags": [
-					"fota-controller"
-				],
-				"summary": "downloadFirmware",
-				"operationId": "downloadFirmwareUsingGET",
-				"produces": [
-					"*/*"
-				],
-				"parameters": [
-					{
-						"name": "firmwareId",
-						"in": "path",
-						"description": "firmwareId",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK"
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "Not Found"
-					}
-				},
-				"deprecated": false
-			}
-		},
-		"/operator/admin/fota/firmwares-page/{deviceTypes}": {
-			"get": {
-				"tags": [
-					"fota-controller"
-				],
-				"summary": "queryFirmwarePageList",
-				"operationId": "queryFirmwarePageListUsingGET",
-				"produces": [
-					"*/*"
-				],
-				"parameters": [
-					{
-						"name": "deviceTypes",
-						"in": "path",
-						"description": "deviceTypes",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "firmwareVersion",
-						"in": "query",
-						"description": "firmwareVersion",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "fotaProtocols",
-						"in": "query",
-						"description": "fotaProtocols",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "limit",
-						"in": "query",
-						"description": "limit",
-						"required": true,
-						"type": "integer",
-						"format": "int32"
-					},
-					{
-						"name": "offset",
-						"in": "query",
-						"description": "offset",
-						"required": true,
-						"type": "integer",
-						"format": "int32"
-					},
-					{
-						"name": "statuses",
-						"in": "query",
-						"description": "statuses",
-						"required": false,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"schema": {
-							"$ref": "#/definitions/Pagination«AdmFirmware»"
-						}
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "Not Found"
-					}
-				},
-				"deprecated": false
-			}
-		},
-		"/operator/admin/fota/firmwares/{deviceTypes}": {
-			"get": {
-				"tags": [
-					"fota-controller"
-				],
-				"summary": "queryFirmwareList",
-				"operationId": "queryFirmwareListUsingGET",
-				"produces": [
-					"*/*"
-				],
-				"parameters": [
-					{
-						"name": "deviceTypes",
-						"in": "path",
-						"description": "deviceTypes",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"schema": {
-							"type": "array",
-							"items": {
-								"$ref": "#/definitions/AdmFirmware"
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "Not Found"
-					}
-				},
-				"deprecated": false
-			}
-		},
-		"/operator/admin/fota/health": {
-			"get": {
-				"tags": [
-					"fota-controller"
-				],
-				"summary": "health",
-				"operationId": "healthUsingGET",
-				"produces": [
-					"*/*"
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"schema": {
-							"$ref": "#/definitions/ResponseEntity"
-						}
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "Not Found"
-					}
-				},
-				"deprecated": false
-			}
-		},
-		"/operator/admin/fota/version": {
-			"get": {
-				"tags": [
-					"fota-controller"
-				],
-				"summary": "version",
-				"operationId": "versionUsingGET",
-				"produces": [
-					"*/*"
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"schema": {
-							"type": "string"
-						}
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "Not Found"
-					}
-				},
-				"deprecated": false
-			}
-		}
-	},
-	"definitions": {
-		"AdmDevFota": {
-			"type": "object",
-			"properties": {
-				"commandExpireDate": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"devId": {
-					"type": "string"
-				},
-				"firmwareId": {
-					"type": "string"
-				},
-				"lastUpdateTime": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"messageCount": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"messageIndex": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"operateTime": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"operatedBy": {
-					"type": "integer",
-					"format": "int64"
-				},
-				"startTime": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"status": {
-					"type": "integer",
-					"format": "int32"
-				}
-			},
-			"title": "AdmDevFota"
-		},
-		"AdmDevFotaCommand": {
-			"type": "object",
-			"properties": {
-				"commandExpireDate": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"currentFirmware": {
-					"type": "string"
-				},
-				"devId": {
-					"type": "string"
-				},
-				"deviceType": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"firmwareId": {
-					"type": "string"
-				},
-				"lastUpdateTime": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"messageCount": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"messageIndex": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"operateTime": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"operatedBy": {
-					"type": "integer",
-					"format": "int64"
-				},
-				"order": {
-					"type": "string"
-				},
-				"orders": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/OrderBy"
-					}
-				},
-				"page": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"rows": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"sort": {
-					"type": "string"
-				},
-				"startTime": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"status": {
-					"type": "integer",
-					"format": "int32"
-				}
-			},
-			"title": "AdmDevFotaCommand"
-		},
-		"AdmDevFotaDto": {
-			"type": "object",
-			"properties": {
-				"commandExpireDate": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"companyName": {
-					"type": "string"
-				},
-				"currentFirmware": {
-					"type": "string"
-				},
-				"devId": {
-					"type": "string"
-				},
-				"fotaProtocol": {
-					"type": "string"
-				},
-				"lastUpdateTime": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"license": {
-					"type": "string"
-				},
-				"messageCount": {
-					"type": "integer",
-					"format": "int64"
-				},
-				"messageIndex": {
-					"type": "integer",
-					"format": "int64"
-				},
-				"operateTime": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"operatedBy": {
-					"type": "integer",
-					"format": "int64"
-				},
-				"operatorName": {
-					"type": "string"
-				},
-				"percentage": {
-					"type": "string"
-				},
-				"startTime": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"status": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"upgradingFirmware": {
-					"type": "string"
-				}
-			},
-			"title": "AdmDevFotaDto"
-		},
-		"AdmFirmware": {
-			"type": "object",
-			"properties": {
-				"addBy": {
-					"type": "integer",
-					"format": "int64"
-				},
-				"createTime": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"creatorName": {
-					"type": "string"
-				},
-				"description": {
-					"type": "string"
-				},
-				"deviceTypes": {
-					"type": "array",
-					"items": {
-						"type": "integer",
-						"format": "int32"
-					}
-				},
-				"fileSize": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"firmwareId": {
-					"type": "string"
-				},
-				"firmwareLocation": {
-					"type": "string"
-				},
-				"firmwareStage": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"firmwareVersion": {
-					"type": "string"
-				},
-				"fotaProtocol": {
-					"type": "string"
-				},
-				"lastUpdateTime": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"status": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"updateBy": {
-					"type": "integer",
-					"format": "int64"
-				},
-				"updaterName": {
-					"type": "string"
-				}
-			},
-			"title": "AdmFirmware"
-		},
-		"AdmFirmwareCommand": {
-			"type": "object",
-			"properties": {
-				"addBy": {
-					"type": "integer",
-					"format": "int64"
-				},
-				"createTime": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"description": {
-					"type": "string"
-				},
-				"deviceTypes": {
-					"type": "string"
-				},
-				"fileSize": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"firmwareId": {
-					"type": "string"
-				},
-				"firmwareLocation": {
-					"type": "string"
-				},
-				"firmwareStage": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"firmwareVersion": {
-					"type": "string"
-				},
-				"fotaProtocol": {
-					"type": "string"
-				},
-				"lastUpdateTime": {
-					"$ref": "#/definitions/Timestamp"
-				},
-				"order": {
-					"type": "string"
-				},
-				"orders": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/OrderBy"
-					}
-				},
-				"page": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"rows": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"sort": {
-					"type": "string"
-				},
-				"status": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"updateBy": {
-					"type": "integer",
-					"format": "int64"
-				}
-			},
-			"title": "AdmFirmwareCommand"
-		},
-		"OrderBy": {
-			"type": "object",
-			"properties": {
-				"order": {
-					"type": "string"
-				},
-				"sort": {
-					"type": "string"
-				}
-			},
-			"title": "OrderBy"
-		},
-		"Pagination«AdmDevFotaDto»": {
-			"type": "object",
-			"properties": {
-				"firstPage": {
-					"type": "boolean"
-				},
-				"lastPage": {
-					"type": "boolean"
-				},
-				"nextPage": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"pageNo": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"pageSize": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"prePage": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"rows": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/AdmDevFotaDto"
-					}
-				},
-				"total": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"totalPage": {
-					"type": "integer",
-					"format": "int32"
-				}
-			},
-			"title": "Pagination«AdmDevFotaDto»"
-		},
-		"Pagination«AdmFirmware»": {
-			"type": "object",
-			"properties": {
-				"firstPage": {
-					"type": "boolean"
-				},
-				"lastPage": {
-					"type": "boolean"
-				},
-				"nextPage": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"pageNo": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"pageSize": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"prePage": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"rows": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/AdmFirmware"
-					}
-				},
-				"total": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"totalPage": {
-					"type": "integer",
-					"format": "int32"
-				}
-			},
-			"title": "Pagination«AdmFirmware»"
-		},
-		"ResponseEntity": {
-			"type": "object",
-			"properties": {
-				"body": {
-					"type": "object"
-				},
-				"statusCode": {
-					"type": "string",
-					"enum": [
-						"100 CONTINUE",
-						"101 SWITCHING_PROTOCOLS",
-						"102 PROCESSING",
-						"103 CHECKPOINT",
-						"200 OK",
-						"201 CREATED",
-						"202 ACCEPTED",
-						"203 NON_AUTHORITATIVE_INFORMATION",
-						"204 NO_CONTENT",
-						"205 RESET_CONTENT",
-						"206 PARTIAL_CONTENT",
-						"207 MULTI_STATUS",
-						"208 ALREADY_REPORTED",
-						"226 IM_USED",
-						"300 MULTIPLE_CHOICES",
-						"301 MOVED_PERMANENTLY",
-						"302 FOUND",
-						"302 MOVED_TEMPORARILY",
-						"303 SEE_OTHER",
-						"304 NOT_MODIFIED",
-						"305 USE_PROXY",
-						"307 TEMPORARY_REDIRECT",
-						"308 PERMANENT_REDIRECT",
-						"400 BAD_REQUEST",
-						"401 UNAUTHORIZED",
-						"402 PAYMENT_REQUIRED",
-						"403 FORBIDDEN",
-						"404 NOT_FOUND",
-						"405 METHOD_NOT_ALLOWED",
-						"406 NOT_ACCEPTABLE",
-						"407 PROXY_AUTHENTICATION_REQUIRED",
-						"408 REQUEST_TIMEOUT",
-						"409 CONFLICT",
-						"410 GONE",
-						"411 LENGTH_REQUIRED",
-						"412 PRECONDITION_FAILED",
-						"413 PAYLOAD_TOO_LARGE",
-						"413 REQUEST_ENTITY_TOO_LARGE",
-						"414 URI_TOO_LONG",
-						"414 REQUEST_URI_TOO_LONG",
-						"415 UNSUPPORTED_MEDIA_TYPE",
-						"416 REQUESTED_RANGE_NOT_SATISFIABLE",
-						"417 EXPECTATION_FAILED",
-						"418 I_AM_A_TEAPOT",
-						"419 INSUFFICIENT_SPACE_ON_RESOURCE",
-						"420 METHOD_FAILURE",
-						"421 DESTINATION_LOCKED",
-						"422 UNPROCESSABLE_ENTITY",
-						"423 LOCKED",
-						"424 FAILED_DEPENDENCY",
-						"426 UPGRADE_REQUIRED",
-						"428 PRECONDITION_REQUIRED",
-						"429 TOO_MANY_REQUESTS",
-						"431 REQUEST_HEADER_FIELDS_TOO_LARGE",
-						"451 UNAVAILABLE_FOR_LEGAL_REASONS",
-						"500 INTERNAL_SERVER_ERROR",
-						"501 NOT_IMPLEMENTED",
-						"502 BAD_GATEWAY",
-						"503 SERVICE_UNAVAILABLE",
-						"504 GATEWAY_TIMEOUT",
-						"505 HTTP_VERSION_NOT_SUPPORTED",
-						"506 VARIANT_ALSO_NEGOTIATES",
-						"507 INSUFFICIENT_STORAGE",
-						"508 LOOP_DETECTED",
-						"509 BANDWIDTH_LIMIT_EXCEEDED",
-						"510 NOT_EXTENDED",
-						"511 NETWORK_AUTHENTICATION_REQUIRED"
-					]
-				},
-				"statusCodeValue": {
-					"type": "integer",
-					"format": "int32"
-				}
-			},
-			"title": "ResponseEntity"
-		},
-		"StandardCode": {
-			"type": "object",
-			"properties": {
-				"comments": {
-					"type": "string"
-				},
-				"displayOrder": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"externalCode": {
-					"type": "string"
-				},
-				"groupCode": {
-					"type": "string"
-				},
-				"id": {
-					"type": "integer",
-					"format": "int64"
-				},
-				"internalCode": {
-					"type": "string"
-				},
-				"language": {
-					"type": "string"
-				},
-				"status": {
-					"type": "integer",
-					"format": "int32"
-				}
-			},
-			"title": "StandardCode"
-		},
-		"Timestamp": {
-			"type": "object",
-			"properties": {
-				"date": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"day": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"hours": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"minutes": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"month": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"nanos": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"seconds": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"time": {
-					"type": "integer",
-					"format": "int64"
-				},
-				"timezoneOffset": {
-					"type": "integer",
-					"format": "int32"
-				},
-				"year": {
-					"type": "integer",
-					"format": "int32"
-				}
-			},
-			"title": "Timestamp"
-		}
-	}
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Mass FOTA API"
+  },
+  "host": "dev.fleetup.cc",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/operator/admin/fota/device": {
+      "post": {
+        "operationId": "addFotaStatusUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "ArrayOfAdmDevFotaCommand",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArrayOfAdmDevFotaCommand"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/ResponseEntity"
+            }
+          },
+          "201": {
+            "description": "201 response"
+          },
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        }
+      }
+    },
+    "/operator/admin/fota/device/{devId}": {
+      "get": {
+        "operationId": "queryFotaStatusUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/AdmDevFota"
+            }
+          },
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateFotaStatusUsingPUT",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "firmwareId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "commandExpireDate",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "devId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/ResponseEntity"
+            }
+          },
+          "201": {
+            "description": "201 response"
+          },
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        }
+      }
+    },
+    "/operator/admin/fota/deviceTypes": {
+      "get": {
+        "operationId": "getDeviceTypeUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfStandardCode"
+            }
+          },
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        }
+      }
+    },
+    "/operator/admin/fota/devices": {
+      "get": {
+        "operationId": "queryFotaStatusListUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfAdmDevFota"
+            }
+          },
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        }
+      }
+    },
+    "/operator/admin/fota/devices/{deviceTypes}": {
+      "get": {
+        "operationId": "queryByCompNameOrFwVerUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "currentFirmware",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "deviceTypes",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "statuses",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "companyName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "devId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "upgradingFirmware",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/PaginationAdmDevFotaDto"
+            }
+          },
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        }
+      }
+    },
+    "/operator/admin/fota/firmware": {
+      "post": {
+        "operationId": "addFirmwareUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "AdmFirmwareCommand",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AdmFirmwareCommand"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/ResponseEntity"
+            }
+          },
+          "201": {
+            "description": "201 response"
+          },
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        }
+      }
+    },
+    "/operator/admin/fota/firmware-files": {
+      "get": {
+        "operationId": "queryFirmwareInfoUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfMODELd4962e"
+            }
+          },
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        }
+      }
+    },
+    "/operator/admin/fota/firmware/{firmwareId}": {
+      "get": {
+        "operationId": "queryFirmwareUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "firmwareId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/AdmFirmware"
+            }
+          },
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateFirmwareUsingPUT",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "deviceTypes",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "firmwareId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "firmwareStage",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "firmwareVersion",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/ResponseEntity"
+            }
+          },
+          "201": {
+            "description": "201 response"
+          },
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        }
+      }
+    },
+    "/operator/admin/fota/firmware/{firmwareId}/download": {
+      "get": {
+        "operationId": "downloadFirmwareUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "firmwareId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          },
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        }
+      }
+    },
+    "/operator/admin/fota/firmwares-page/{deviceTypes}": {
+      "get": {
+        "operationId": "queryFirmwarePageListUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "deviceTypes",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fotaProtocols",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "statuses",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "firmwareVersion",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/PaginationAdmFirmware"
+            }
+          },
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        }
+      }
+    },
+    "/operator/admin/fota/firmwares/{deviceTypes}": {
+      "get": {
+        "operationId": "queryFirmwareListUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "deviceTypes",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfAdmFirmware"
+            }
+          },
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        }
+      }
+    },
+    "/operator/admin/fota/health": {
+      "get": {
+        "operationId": "healthUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/ResponseEntity"
+            }
+          },
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        }
+      }
+    },
+    "/operator/admin/fota/version": {
+      "get": {
+        "operationId": "versionUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/MODEL593985"
+            }
+          },
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AdmFirmware": {
+      "type": "object",
+      "properties": {
+        "addBy": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "createTime": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "creatorName": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "deviceTypes": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "fileSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "firmwareId": {
+          "type": "string"
+        },
+        "firmwareLocation": {
+          "type": "string"
+        },
+        "firmwareStage": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "firmwareVersion": {
+          "type": "string"
+        },
+        "fotaProtocol": {
+          "type": "string"
+        },
+        "lastUpdateTime": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "updateBy": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "updaterName": {
+          "type": "string"
+        }
+      },
+      "title": "AdmFirmware"
+    },
+    "OrderBy": {
+      "type": "object",
+      "properties": {
+        "order": {
+          "type": "string"
+        },
+        "sort": {
+          "type": "string"
+        }
+      },
+      "title": "OrderBy"
+    },
+    "ArrayOfAdmFirmware": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/AdmFirmware"
+      }
+    },
+    "AdmDevFota": {
+      "type": "object",
+      "properties": {
+        "commandExpireDate": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "devId": {
+          "type": "string"
+        },
+        "firmwareId": {
+          "type": "string"
+        },
+        "lastUpdateTime": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "messageCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "messageIndex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "operateTime": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "operatedBy": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "startTime": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "AdmDevFota"
+    },
+    "AdmFirmwareCommand": {
+      "type": "object",
+      "properties": {
+        "addBy": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "createTime": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "description": {
+          "type": "string"
+        },
+        "deviceTypes": {
+          "type": "string"
+        },
+        "fileSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "firmwareId": {
+          "type": "string"
+        },
+        "firmwareLocation": {
+          "type": "string"
+        },
+        "firmwareStage": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "firmwareVersion": {
+          "type": "string"
+        },
+        "fotaProtocol": {
+          "type": "string"
+        },
+        "lastUpdateTime": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "order": {
+          "type": "string"
+        },
+        "orders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrderBy"
+          }
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rows": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sort": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "updateBy": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "AdmFirmwareCommand"
+    },
+    "ArrayOfMODELd4962e": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    "ArrayOfAdmDevFota": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/AdmDevFota"
+      }
+    },
+    "MODEL593985": {
+      "type": "object"
+    },
+    "Timestamp": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "day": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "hours": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "minutes": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "month": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "nanos": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "seconds": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "time": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "timezoneOffset": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "year": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "Timestamp"
+    },
+    "PaginationAdmDevFotaDto": {
+      "type": "object",
+      "properties": {
+        "firstPage": {
+          "type": "boolean"
+        },
+        "lastPage": {
+          "type": "boolean"
+        },
+        "nextPage": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageNo": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prePage": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AdmDevFotaDto"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalPage": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "PaginationAdmDevFotaDto"
+    },
+    "ResponseEntity": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "properties": {}
+        },
+        "statusCode": {
+          "type": "string",
+          "enum": [
+            "100 CONTINUE",
+            "101 SWITCHING_PROTOCOLS",
+            "102 PROCESSING",
+            "103 CHECKPOINT",
+            "200 OK",
+            "201 CREATED",
+            "202 ACCEPTED",
+            "203 NON_AUTHORITATIVE_INFORMATION",
+            "204 NO_CONTENT",
+            "205 RESET_CONTENT",
+            "206 PARTIAL_CONTENT",
+            "207 MULTI_STATUS",
+            "208 ALREADY_REPORTED",
+            "226 IM_USED",
+            "300 MULTIPLE_CHOICES",
+            "301 MOVED_PERMANENTLY",
+            "302 FOUND",
+            "302 MOVED_TEMPORARILY",
+            "303 SEE_OTHER",
+            "304 NOT_MODIFIED",
+            "305 USE_PROXY",
+            "307 TEMPORARY_REDIRECT",
+            "308 PERMANENT_REDIRECT",
+            "400 BAD_REQUEST",
+            "401 UNAUTHORIZED",
+            "402 PAYMENT_REQUIRED",
+            "403 FORBIDDEN",
+            "404 NOT_FOUND",
+            "405 METHOD_NOT_ALLOWED",
+            "406 NOT_ACCEPTABLE",
+            "407 PROXY_AUTHENTICATION_REQUIRED",
+            "408 REQUEST_TIMEOUT",
+            "409 CONFLICT",
+            "410 GONE",
+            "411 LENGTH_REQUIRED",
+            "412 PRECONDITION_FAILED",
+            "413 PAYLOAD_TOO_LARGE",
+            "413 REQUEST_ENTITY_TOO_LARGE",
+            "414 URI_TOO_LONG",
+            "414 REQUEST_URI_TOO_LONG",
+            "415 UNSUPPORTED_MEDIA_TYPE",
+            "416 REQUESTED_RANGE_NOT_SATISFIABLE",
+            "417 EXPECTATION_FAILED",
+            "418 I_AM_A_TEAPOT",
+            "419 INSUFFICIENT_SPACE_ON_RESOURCE",
+            "420 METHOD_FAILURE",
+            "421 DESTINATION_LOCKED",
+            "422 UNPROCESSABLE_ENTITY",
+            "423 LOCKED",
+            "424 FAILED_DEPENDENCY",
+            "426 UPGRADE_REQUIRED",
+            "428 PRECONDITION_REQUIRED",
+            "429 TOO_MANY_REQUESTS",
+            "431 REQUEST_HEADER_FIELDS_TOO_LARGE",
+            "451 UNAVAILABLE_FOR_LEGAL_REASONS",
+            "500 INTERNAL_SERVER_ERROR",
+            "501 NOT_IMPLEMENTED",
+            "502 BAD_GATEWAY",
+            "503 SERVICE_UNAVAILABLE",
+            "504 GATEWAY_TIMEOUT",
+            "505 HTTP_VERSION_NOT_SUPPORTED",
+            "506 VARIANT_ALSO_NEGOTIATES",
+            "507 INSUFFICIENT_STORAGE",
+            "508 LOOP_DETECTED",
+            "509 BANDWIDTH_LIMIT_EXCEEDED",
+            "510 NOT_EXTENDED",
+            "511 NETWORK_AUTHENTICATION_REQUIRED"
+          ]
+        },
+        "statusCodeValue": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "ResponseEntity"
+    },
+    "ArrayOfAdmDevFotaCommand": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/AdmDevFotaCommand"
+      }
+    },
+    "AdmDevFotaCommand": {
+      "type": "object",
+      "properties": {
+        "commandExpireDate": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "currentFirmware": {
+          "type": "string"
+        },
+        "devId": {
+          "type": "string"
+        },
+        "deviceType": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "firmwareId": {
+          "type": "string"
+        },
+        "lastUpdateTime": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "messageCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "messageIndex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "operateTime": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "operatedBy": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "order": {
+          "type": "string"
+        },
+        "orders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrderBy"
+          }
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rows": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sort": {
+          "type": "string"
+        },
+        "startTime": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "AdmDevFotaCommand"
+    },
+    "ArrayOfStandardCode": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/StandardCode"
+      }
+    },
+    "PaginationAdmFirmware": {
+      "type": "object",
+      "properties": {
+        "firstPage": {
+          "type": "boolean"
+        },
+        "lastPage": {
+          "type": "boolean"
+        },
+        "nextPage": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageNo": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prePage": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AdmFirmware"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalPage": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "PaginationAdmFirmware"
+    },
+    "StandardCode": {
+      "type": "object",
+      "properties": {
+        "comments": {
+          "type": "string"
+        },
+        "displayOrder": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "externalCode": {
+          "type": "string"
+        },
+        "groupCode": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "internalCode": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "StandardCode"
+    },
+    "AdmDevFotaDto": {
+      "type": "object",
+      "properties": {
+        "commandExpireDate": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "companyName": {
+          "type": "string"
+        },
+        "currentFirmware": {
+          "type": "string"
+        },
+        "devId": {
+          "type": "string"
+        },
+        "fotaProtocol": {
+          "type": "string"
+        },
+        "lastUpdateTime": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "license": {
+          "type": "string"
+        },
+        "messageCount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "messageIndex": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "operateTime": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "operatedBy": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "operatorName": {
+          "type": "string"
+        },
+        "percentage": {
+          "type": "string"
+        },
+        "startTime": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "upgradingFirmware": {
+          "type": "string"
+        }
+      },
+      "title": "AdmDevFotaDto"
+    }
+  }
 }

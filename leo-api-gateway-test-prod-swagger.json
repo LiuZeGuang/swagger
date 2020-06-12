@@ -1,589 +1,196 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "version": "2020-06-04T05:08:06Z",
-    "title": "leo-api-gateway-test"
-  },
-  "host": "leo.fleetup.cc",
-  "schemes": [
-    "https"
-  ],
-  "paths": {
-    "/": {
-      "x-amazon-apigateway-any-method": {
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/Empty"
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "uri": "http://test5.sz.fleetup.net/",
-          "responses": {
-            "default": {
-              "statusCode": "200"
-            }
-          },
-          "passthroughBehavior": "when_no_match",
-          "httpMethod": "ANY",
-          "type": "http_proxy"
-        }
-      }
-    },
-    "/demo/pets": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "type",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/Empty"
-            },
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "uri": "http://petstore-demo-endpoint.execute-api.com/petstore/pets",
-          "responses": {
-            "default": {
-              "statusCode": "200",
-              "responseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "responseTemplates": {
-                "application/json": "#set($inputRoot = $input.path('$'))\r\n$input.json(\"$\")\r\n#if($inputRoot.toString().contains(\"error\"))\r\n#set($context.responseOverride.status = 400)\r\n#end"
-              }
-            }
-          },
-          "requestParameters": {
-            "integration.request.querystring.page": "method.request.querystring.page",
-            "integration.request.querystring.type": "method.request.querystring.type"
-          },
-          "passthroughBehavior": "when_no_match",
-          "httpMethod": "GET",
-          "cacheNamespace": "y0uo7u",
-          "cacheKeyParameters": [
-            "method.request.querystring.page",
-            "method.request.querystring.type"
-          ],
-          "type": "http"
-        }
-      },
-      "options": {
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/Empty"
-            },
-            "headers": {
-              "Access-Control-Allow-Origin": {
-                "type": "string"
-              },
-              "Access-Control-Allow-Methods": {
-                "type": "string"
-              },
-              "Access-Control-Allow-Headers": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "responses": {
-            "default": {
-              "statusCode": "200",
-              "responseParameters": {
-                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
-                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              }
-            }
-          },
-          "requestTemplates": {
-            "application/json": "{\"statusCode\": 200}"
-          },
-          "passthroughBehavior": "when_no_match",
-          "type": "mock"
-        }
-      }
-    },
-    "/demo/petstore/{proxy+}": {
-      "x-amazon-apigateway-any-method": {
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "proxy",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {},
-        "x-amazon-apigateway-integration": {
-          "uri": "http://petstore-demo-endpoint.execute-api.com/{proxy}",
-          "responses": {
-            "default": {
-              "statusCode": "200"
-            }
-          },
-          "requestParameters": {
-            "integration.request.path.proxy": "method.request.path.proxy"
-          },
-          "passthroughBehavior": "when_no_match",
-          "httpMethod": "ANY",
-          "cacheNamespace": "x7by0t",
-          "cacheKeyParameters": [
-            "method.request.path.proxy"
-          ],
-          "type": "http_proxy"
-        }
-      }
-    },
-    "/demo/test1": {
-      "get": {
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/Empty"
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:412381201808:function:leo-api-test1/invocations",
-          "responses": {
-            "default": {
-              "statusCode": "200"
-            }
-          },
-          "requestTemplates": {
-            "application/json": "#set($inputRoot = $input.path('$'))\r\n{\r\n\t\"resource\": \"$context.resource\",\r\n\t\"path\": \"$context.path\",\r\n\t\"httpMethod\": \"$context.httpMethod\",\r\n\t\"headers\": {\r\n\t\t\"cookie\": \"$input.params('cookie')\",\r\n\t\t\"accept\": \"$input.params('accept')\",\r\n\t\t\"XFF\": \"$input.params('X-Forwarded-For')\"\r\n\t},\r\n\t\"multiValueHeaders\": {},\r\n\t\"queryStringParameters\": {},\r\n\t\"multiValueQueryStringParameters\": {},\r\n\t\"pathParameters\": {},\r\n\t\"stageVariables\": {},\r\n\t\"requestContext\": {\r\n\t\t\"accountId\": \"$context.accountId\",\r\n\t\t\"resourceId\": \"$context.resourceId\",\r\n\t\t\"stage\": \"$context.stage\",\r\n\t\t\"requestId\": \"$context.resourceId\",\r\n\t\t\"identity\": {\r\n\t\t\t\"cognitoIdentityPoolId\": \"$context.identity.cognitoIdentityPoolId\",\r\n\t\t\t\"accountId\": \"$context.identity.accountId\",\r\n\t\t\t\"cognitoIdentityId\": \"$context.identity.cognitoIdentityId\",\r\n\t\t\t\"caller\": \"$context.identity.caller\",\r\n\t\t\t\"apiKey\": \"$context.identity.apiKey\",\r\n\t\t\t\"sourceIp\": \"$context.identity.sourceIp\",\r\n\t\t\t\"cognitoAuthenticationType\": \"$context.identity.cognitoAuthenticationType\",\r\n\t\t\t\"cognitoAuthenticationProvider\": \"$context.identity.cognitoAuthenticationProvider\",\r\n\t\t\t\"userArn\": \"$context.identity.userArn\",\r\n\t\t\t\"userAgent\": \"$context.identity.userAgent\",\r\n\t\t\t\"user\": \"$context.identity.user\",\r\n\t\t\t\"accessKey\": \"$context.identity.apiKeyId\"\r\n\t\t},\r\n\t\t\"ResourcePath\": \"$context.resourcePath\",\r\n\t\t\"authorizer\": {\r\n\t\t\t\"type\": \"foo\",\r\n\t\t\t\"authorizationToken\": \"foo\",\r\n\t\t\t\"methodArn\": \"foo\"\r\n\t\t},\r\n\t\t\"httpMethod\": \"$context.httpMethod\",\r\n\t\t\"apiId\": \"$context.apiId\",\r\n\t\t\"connectedAt\": \"$context.connectedAt\",\r\n\t\t\"connectionId\": \"$context.connectionId\",\r\n\t\t\"domainName\": \"$context.domainName\",\r\n\t\t\"error\": \"$context.error\",\r\n\t\t\"eventType\": \"$context.eventType\",\r\n\t\t\"extendedRequestId\": \"$context.awsEndpointRequestId\",\r\n\t\t\"integrationLatency\": \"$context.integrationLatency\",\r\n\t\t\"messageDirection\": \"$context.messageDirection\",\r\n\t\t\"messageId\": \"$context.messageId\",\r\n\t\t\"requestTime\": \"$context.requestTime\",\r\n\t\t\"requestTimeEpoch\": \"$context.requestTimeEpoch\",\r\n\t\t\"routeKey\": \"$context.routeKey\",\r\n\t\t\"status\": \"$context.status\"\r\n\t},\r\n\t\"body\": \"foo\"\r\n}"
-          },
-          "passthroughBehavior": "when_no_templates",
-          "httpMethod": "POST",
-          "contentHandling": "CONVERT_TO_TEXT",
-          "type": "aws"
-        }
-      }
-    },
-    "/demo/test2": {
-      "post": {
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "FirmwareInputModel",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/FirmwareInputModel"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/Empty"
-            }
-          }
-        },
-        "x-amazon-apigateway-request-validator": "验证正文",
-        "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:412381201808:function:leo-api-test2/invocations",
-          "responses": {
-            "default": {
-              "statusCode": "200"
-            }
-          },
-          "requestTemplates": {
-            "application/json": "#set($inputRoot = $input.path('$'))\n{\n    \"total\": \"$inputRoot.totalReq\",\n    \"pageSize\": \"$inputRoot.pageSizeReq\",\n    \"pageNo\": \"$inputRoot.pageNoReq\",\n    \"rows\": [\n#foreach($elem in $inputRoot.rowsReq)\n      {\n        \"firmwareId\": \"$elem.firmwareId\",\n\t\t\"firmwareVersion\": \"$elem.firmwareVersion\",\n\t\t\"firmwareLocation\": \"$elem.firmwareLocation\",\n\t\t\"firmwareStage\": \"$elem.firmwareStage\",\n\t\t\"fileSize\": \"$elem.fileSize\",\n\t\t\"addBy\": \"$elem.addBy\",\n\t\t\"updateBy\": \"$elem.updateBy\",\n\t\t\"description\": \"$elem.description\",\n\t\t\"status\": \"$elem.status\",\n\t\t\"createTime\": \"$elem.createTime\",\n\t\t\"lastUpdateTime\": \"$elem.lastUpdateTime\",\n\t\t\"deviceTypes\": \"$elem.deviceTypes\",\n\t\t\"creatorName\": \"$elem.creatorName\",\n\t\t\"updaterName\": \"$elem.updaterName\",\n\t\t\"fotaProtocol\": \"$elem.fotaProtocol\"\n      }\n\t  #if($foreach.hasNext),#end\t\n#end\n    ]\n}"
-          },
-          "passthroughBehavior": "when_no_templates",
-          "httpMethod": "POST",
-          "contentHandling": "CONVERT_TO_TEXT",
-          "type": "aws"
-        }
-      }
-    },
-    "/demo/{proxy+}": {
-      "x-amazon-apigateway-any-method": {
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "proxy",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {},
-        "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:412381201808:function:leo-api-test/invocations",
-          "responses": {
-            "default": {
-              "statusCode": "200"
-            }
-          },
-          "passthroughBehavior": "when_no_match",
-          "httpMethod": "POST",
-          "cacheNamespace": "7rvt3z",
-          "cacheKeyParameters": [
-            "method.request.path.proxy"
-          ],
-          "contentHandling": "CONVERT_TO_TEXT",
-          "type": "aws_proxy"
-        }
-      }
-    },
-    "/test": {
-      "x-amazon-apigateway-any-method": {
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/Empty"
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:412381201808:function:leo-lambda-event/invocations",
-          "responses": {
-            "default": {
-              "statusCode": "200"
-            }
-          },
-          "passthroughBehavior": "when_no_match",
-          "httpMethod": "POST",
-          "contentHandling": "CONVERT_TO_TEXT",
-          "type": "aws"
-        }
-      }
-    },
-    "/{proxy+}": {
-      "x-amazon-apigateway-any-method": {
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "proxy",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {},
-        "x-amazon-apigateway-integration": {
-          "uri": "http://test5.sz.fleetup.net/{proxy}",
-          "responses": {
-            "default": {
-              "statusCode": "200"
-            }
-          },
-          "requestParameters": {
-            "integration.request.path.proxy": "method.request.path.proxy"
-          },
-          "passthroughBehavior": "when_no_match",
-          "httpMethod": "ANY",
-          "cacheNamespace": "siprmg",
-          "cacheKeyParameters": [
-            "method.request.path.proxy"
-          ],
-          "type": "http_proxy"
-        }
-      }
-    }
-  },
-  "definitions": {
-    "Empty": {
-      "type": "object",
-      "title": "Empty Schema"
-    },
-    "FirmwareInputModel": {
-      "type": "object",
-      "properties": {
-        "totalReq": {
-          "type": "integer",
-          "minimum": -180,
-          "maximum": 180
-        },
-        "pageSizeReq": {
-          "type": "integer"
-        },
-        "pageNoReq": {
-          "type": "integer"
-        },
-        "rowsReq": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "firmwareId": {
-                "type": "string"
-              },
-              "firmwareVersion": {
-                "type": "string"
-              },
-              "firmwareLocation": {
-                "type": "string"
-              },
-              "firmwareStage": {
-                "type": "integer"
-              },
-              "fileSize": {
-                "type": "integer"
-              },
-              "addBy": {
-                "type": "integer"
-              },
-              "updateBy": {
-                "type": "integer"
-              },
-              "description": {
-                "type": "string"
-              },
-              "status": {
-                "type": "integer"
-              },
-              "createTime": {
-                "type": "integer"
-              },
-              "lastUpdateTime": {
-                "type": "integer"
-              },
-              "deviceTypes": {
-                "type": "integer"
-              },
-              "creatorName": {
-                "type": "string"
-              },
-              "updaterName": {
-                "type": "string"
-              },
-              "fotaProtocol": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "firmwareId",
-              "firmwareLocation",
-              "firmwareVersion"
-            ]
-          }
-        }
-      },
-      "title": "FirmwareInputModel"
-    }
-  },
-  "x-amazon-apigateway-documentation": {
-    "version": "1.2",
-    "createdDate": "2020-06-05T01:47:45Z",
-    "documentationParts": [
-      {
-        "location": {
-          "type": "MODEL",
-          "name": "Empty"
-        },
-        "properties": {
-          "title": "Empty Schema"
-        }
-      },
-      {
-        "location": {
-          "type": "MODEL",
-          "name": "FirmwareInputModel"
-        },
-        "properties": {
-          "title": "FirmwareInputModel"
-        }
-      },
-      {
-        "location": {
-          "type": "QUERY_PARAMETER",
-          "path": "/demo/country",
-          "method": "GET",
-          "name": "country"
-        },
-        "properties": {
-          "description": "country"
-        }
-      },
-      {
-        "location": {
-          "type": "RESPONSE",
-          "method": "*",
-          "statusCode": "200"
-        },
-        "properties": {
-          "description": "200 response"
-        }
-      },
-      {
-        "location": {
-          "type": "RESPONSE",
-          "path": "/demo/country",
-          "method": "GET",
-          "statusCode": "200"
-        },
-        "properties": {
-          "description": "OK"
-        }
-      },
-      {
-        "location": {
-          "type": "RESPONSE",
-          "path": "/demo/country",
-          "method": "GET",
-          "statusCode": "401"
-        },
-        "properties": {
-          "description": "Unauthorized"
-        }
-      },
-      {
-        "location": {
-          "type": "RESPONSE",
-          "path": "/demo/country",
-          "method": "GET",
-          "statusCode": "403"
-        },
-        "properties": {
-          "description": "Forbidden"
-        }
-      },
-      {
-        "location": {
-          "type": "RESPONSE",
-          "path": "/demo/country",
-          "method": "GET",
-          "statusCode": "404"
-        },
-        "properties": {
-          "description": "Not Found"
-        }
-      },
-      {
-        "location": {
-          "type": "RESPONSE",
-          "path": "/demo/pets",
-          "method": "GET",
-          "statusCode": "200"
-        },
-        "properties": {
-          "description": "200 response"
-        }
-      },
-      {
-        "location": {
-          "type": "RESPONSE",
-          "path": "/demo/pets",
-          "method": "OPTIONS",
-          "statusCode": "200"
-        },
-        "properties": {
-          "description": "200 response"
-        }
-      },
-      {
-        "location": {
-          "type": "RESPONSE",
-          "path": "/demo/test1",
-          "method": "GET",
-          "statusCode": "200"
-        },
-        "properties": {
-          "description": "200 response"
-        }
-      },
-      {
-        "location": {
-          "type": "RESPONSE",
-          "path": "/demo/test2",
-          "method": "POST",
-          "statusCode": "200"
-        },
-        "properties": {
-          "description": "200 response"
-        }
-      },
-      {
-        "location": {
-          "type": "RESPONSE",
-          "path": "/test",
-          "method": "*",
-          "statusCode": "200"
-        },
-        "properties": {
-          "description": "200 response"
-        }
-      }
-    ]
-  },
-  "x-amazon-apigateway-gateway-responses": {
-    "MISSING_AUTHENTICATION_TOKEN": {
-      "statusCode": 403,
-      "responseTemplates": {
-        "application/json": "{\n     \"message\":\"$context.error.messageString\",\n     \"type\": \"$context.error.responseType\",\n     \"statusCode\": \"'404'\",\n     \"stage\": \"$context.stage\",\n     \"resourcePath\": \"$context.resourcePath\"\n}"
-      }
-    }
-  },
-  "x-amazon-apigateway-request-validators": {
-    "验证正文": {
-      "validateRequestParameters": false,
-      "validateRequestBody": true
-    }
-  },
-  "x-amazon-apigateway-binary-media-types": [
-    "multipart/form-data"
-  ]
+	"swagger": "2.0",
+	"info": {
+		"version": "1.0",
+		"title": "demo"
+	},
+	"host": "localhost:8080",
+	"basePath": "/",
+	"tags": [
+		{
+			"name": "demo-controller",
+			"description": "Demo Controller"
+		}
+	],
+	"paths": {
+		"/demo/address": {
+			"get": {
+				"tags": [
+					"demo-controller"
+				],
+				"summary": "address",
+				"operationId": "addressUsingGET",
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "address",
+						"in": "query",
+						"description": "address",
+						"required": false,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "string"
+						}
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"deprecated": false
+			},
+			"post": {
+				"tags": [
+					"demo-controller"
+				],
+				"summary": "address",
+				"operationId": "addressUsingPOST",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "mode",
+						"description": "mode",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Address"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "object"
+						}
+					},
+					"201": {
+						"description": "Created"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/demo/city": {
+			"get": {
+				"tags": [
+					"demo-controller"
+				],
+				"summary": "city",
+				"operationId": "cityUsingGET",
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "city",
+						"in": "query",
+						"description": "city",
+						"required": false,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "string"
+						}
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/demo/country": {
+			"get": {
+				"tags": [
+					"demo-controller"
+				],
+				"summary": "country",
+				"operationId": "countryUsingGET",
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "country",
+						"in": "query",
+						"description": "country",
+						"required": false,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "string"
+						}
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"deprecated": false
+			}
+		}
+	},
+	"definitions": {
+		"Address": {
+			"type": "object",
+			"properties": {
+				"address": {
+					"type": "string"
+				},
+				"city": {
+					"type": "string"
+				},
+				"country": {
+					"type": "string"
+				}
+			},
+			"title": "Address"
+		}
+	}
 }

@@ -4,7 +4,7 @@
 		"version": "1.0",
 		"title": "demo"
 	},
-	"host": "localhost:8080",
+	"host": "leo.fleetup.cc",
 	"basePath": "/",
 	"tags": [
 		{

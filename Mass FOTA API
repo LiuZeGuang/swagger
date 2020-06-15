@@ -8,7 +8,7 @@
 	"basePath": "/",
 	"tags": [
 		{
-			"name": "fota-controller",
+			"name": "Operator Admin Fota",
 			"description": "Fota Controller"
 		}
 	],
@@ -19,22 +19,15 @@
 		"/operator/admin/fota/device": {
 			"post": {
 				"tags": [
-					"fota-controller"
+					"Operator Admin Fota"
 				],
 				"summary": "addFotaStatus",
+				"description": "Save upgrade information",
 				"operationId": "addFotaStatusUsingPOST",
 				"consumes": [
 					"application/json"
 				],
 				"parameters": [
-					{
-						"name": "cookie",
-						"in": "header",
-						"description": "login verification",
-						"required": true,
-						"type": "string",
-						"default": "Bearer "
-					},
 					{
 						"in": "body",
 						"name": "fotaCommandList",
@@ -74,24 +67,17 @@
 		"/operator/admin/fota/device/{devId}": {
 			"get": {
 				"tags": [
-					"fota-controller"
+					"Operator Admin Fota"
 				],
 				"summary": "queryFotaStatus",
+				"description": "Get upgrade information by id",
 				"operationId": "queryFotaStatusUsingGET",
 				"parameters": [
 					{
-						"name": "cookie",
-						"in": "header",
-						"description": "login verification",
-						"required": true,
-						"type": "string",
-						"default": "Bearer "
-					},
-					{
 						"name": "devId",
 						"in": "path",
-						"description": "devId",
-						"required": true,
+						"description": "Device id",
+						"required": false,
 						"type": "string"
 					}
 				],
@@ -116,9 +102,10 @@
 			},
 			"put": {
 				"tags": [
-					"fota-controller"
+					"Operator Admin Fota"
 				],
 				"summary": "updateFotaStatus",
+				"description": "update upgrade information",
 				"operationId": "updateFotaStatusUsingPUT",
 				"consumes": [
 					"application/json"
@@ -127,29 +114,21 @@
 					{
 						"name": "commandExpireDate",
 						"in": "query",
-						"description": "commandExpireDate",
+						"description": "Command Expire Date",
 						"required": false,
 						"type": "string"
 					},
 					{
-						"name": "cookie",
-						"in": "header",
-						"description": "login verification",
-						"required": true,
-						"type": "string",
-						"default": "Bearer "
-					},
-					{
 						"name": "devId",
 						"in": "path",
-						"description": "devId",
+						"description": "Device id",
 						"required": true,
 						"type": "string"
 					},
 					{
 						"name": "firmwareId",
 						"in": "query",
-						"description": "firmwareId",
+						"description": "Firmware Id",
 						"required": false,
 						"type": "string"
 					},
@@ -158,8 +137,7 @@
 						"in": "query",
 						"description": "status",
 						"required": false,
-						"type": "integer",
-						"format": "int32"
+						"type": "string"
 					}
 				],
 				"responses": {
@@ -188,20 +166,11 @@
 		"/operator/admin/fota/deviceTypes": {
 			"get": {
 				"tags": [
-					"fota-controller"
+					"Operator Admin Fota"
 				],
 				"summary": "getDeviceType",
+				"description": "Get device type list",
 				"operationId": "getDeviceTypeUsingGET",
-				"parameters": [
-					{
-						"name": "cookie",
-						"in": "header",
-						"description": "login verification",
-						"required": true,
-						"type": "string",
-						"default": "Bearer "
-					}
-				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -228,20 +197,11 @@
 		"/operator/admin/fota/devices": {
 			"get": {
 				"tags": [
-					"fota-controller"
+					"Operator Admin Fota"
 				],
 				"summary": "queryFotaStatusList",
+				"description": "Get upgrade list",
 				"operationId": "queryFotaStatusListUsingGET",
-				"parameters": [
-					{
-						"name": "cookie",
-						"in": "header",
-						"description": "login verification",
-						"required": true,
-						"type": "string",
-						"default": "Bearer "
-					}
-				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -268,62 +228,56 @@
 		"/operator/admin/fota/devices/{deviceTypes}": {
 			"get": {
 				"tags": [
-					"fota-controller"
+					"Operator Admin Fota"
 				],
 				"summary": "queryByCompNameOrFwVer",
+				"description": "Fuzzy query device upgrade information list",
 				"operationId": "queryByCompNameOrFwVerUsingGET",
 				"parameters": [
 					{
 						"name": "companyName",
 						"in": "query",
-						"description": "companyName",
+						"description": "Company Name",
 						"required": false,
 						"type": "string"
 					},
 					{
-						"name": "cookie",
-						"in": "header",
-						"description": "login verification",
-						"required": true,
-						"type": "string",
-						"default": "Bearer "
-					},
-					{
 						"name": "currentFirmware",
 						"in": "query",
-						"description": "currentFirmware",
+						"description": "Current Firmware",
 						"required": false,
 						"type": "string"
 					},
 					{
 						"name": "devId",
 						"in": "query",
-						"description": "devId",
+						"description": "Device ID",
 						"required": false,
 						"type": "string"
 					},
 					{
 						"name": "deviceTypes",
 						"in": "path",
-						"description": "deviceTypes",
+						"description": "Device Type",
 						"required": true,
-						"type": "string"
+						"type": "string",
+						"default": "1"
 					},
 					{
 						"name": "limit",
 						"in": "query",
-						"description": "limit",
+						"description": "row",
 						"required": true,
-						"type": "integer",
-						"format": "int32"
+						"type": "string",
+						"default": "10"
 					},
 					{
 						"name": "offset",
 						"in": "query",
-						"description": "offset",
+						"description": "page",
 						"required": true,
-						"type": "integer",
-						"format": "int32"
+						"type": "string",
+						"default": "0"
 					},
 					{
 						"name": "statuses",
@@ -335,7 +289,7 @@
 					{
 						"name": "upgradingFirmware",
 						"in": "query",
-						"description": "upgradingFirmware",
+						"description": "Upgrading Firmware",
 						"required": false,
 						"type": "string"
 					}
@@ -344,7 +298,7 @@
 					"200": {
 						"description": "OK",
 						"schema": {
-							"$ref": "#/definitions/PaginationAdmDevFotaDto"
+							"$ref": "#/definitions/Pagination«AdmDevFotaDto»"
 						}
 					},
 					"401": {
@@ -363,9 +317,10 @@
 		"/operator/admin/fota/firmware": {
 			"post": {
 				"tags": [
-					"fota-controller"
+					"Operator Admin Fota"
 				],
 				"summary": "addFirmware",
+				"description": "Add new firmware",
 				"operationId": "addFirmwareUsingPOST",
 				"consumes": [
 					"application/json"
@@ -379,14 +334,6 @@
 						"schema": {
 							"$ref": "#/definitions/AdmFirmwareCommand"
 						}
-					},
-					{
-						"name": "cookie",
-						"in": "header",
-						"description": "login verification",
-						"required": true,
-						"type": "string",
-						"default": "Bearer "
 					}
 				],
 				"responses": {
@@ -415,27 +362,18 @@
 		"/operator/admin/fota/firmware-files": {
 			"get": {
 				"tags": [
-					"fota-controller"
+					"Operator Admin Fota"
 				],
 				"summary": "queryFirmwareInfo",
+				"description": "Get the firmware list on S3",
 				"operationId": "queryFirmwareInfoUsingGET",
-				"parameters": [
-					{
-						"name": "cookie",
-						"in": "header",
-						"description": "login verification",
-						"required": true,
-						"type": "string",
-						"default": "Bearer "
-					}
-				],
 				"responses": {
 					"200": {
 						"description": "OK",
 						"schema": {
 							"type": "array",
 							"items": {
-								"$ref": "#/definitions/Empty"
+								"type": "string"
 							}
 						}
 					},
@@ -455,18 +393,18 @@
 		"/operator/admin/fota/firmware/{firmwareId}": {
 			"get": {
 				"tags": [
-					"fota-controller"
+					"Operator Admin Fota"
 				],
 				"summary": "queryFirmware",
+				"description": "Query firmware information based on firmware id",
 				"operationId": "queryFirmwareUsingGET",
 				"parameters": [
 					{
-						"name": "cookie",
-						"in": "header",
-						"description": "login verification",
+						"description": "firmwareId",
 						"required": true,
-						"type": "string",
-						"default": "Bearer "
+						"schema": {
+							"type": "string"
+						}
 					},
 					{
 						"name": "firmwareId",
@@ -497,65 +435,56 @@
 			},
 			"put": {
 				"tags": [
-					"fota-controller"
+					"Operator Admin Fota"
 				],
 				"summary": "updateFirmware",
+				"description": "Modify firmware basic information according to firmware id",
 				"operationId": "updateFirmwareUsingPUT",
 				"consumes": [
 					"application/json"
 				],
 				"parameters": [
 					{
-						"name": "cookie",
-						"in": "header",
-						"description": "login verification",
-						"required": true,
-						"type": "string",
-						"default": "Bearer "
-					},
-					{
 						"name": "description",
 						"in": "query",
-						"description": "description",
+						"description": "Description",
 						"required": false,
 						"type": "string"
 					},
 					{
 						"name": "deviceTypes",
 						"in": "query",
-						"description": "deviceTypes",
+						"description": "Device Type collection",
 						"required": false,
 						"type": "string"
 					},
 					{
 						"name": "firmwareId",
 						"in": "path",
-						"description": "firmwareId",
+						"description": "Firmware Id",
 						"required": true,
 						"type": "string"
 					},
 					{
 						"name": "firmwareStage",
 						"in": "query",
-						"description": "firmwareStage",
+						"description": "Firmware Stage",
 						"required": false,
-						"type": "integer",
-						"format": "int32"
+						"type": "string"
 					},
 					{
 						"name": "firmwareVersion",
 						"in": "query",
-						"description": "firmwareVersion",
+						"description": "Firmware Version",
 						"required": false,
 						"type": "string"
 					},
 					{
 						"name": "status",
 						"in": "query",
-						"description": "status",
+						"description": "Status",
 						"required": false,
-						"type": "integer",
-						"format": "int32"
+						"type": "string"
 					}
 				],
 				"responses": {
@@ -584,18 +513,18 @@
 		"/operator/admin/fota/firmware/{firmwareId}/download": {
 			"get": {
 				"tags": [
-					"fota-controller"
+					"Operator Admin Fota"
 				],
 				"summary": "downloadFirmware",
+				"description": "Download firmware based on firmware id",
 				"operationId": "downloadFirmwareUsingGET",
 				"parameters": [
 					{
-						"name": "cookie",
-						"in": "header",
-						"description": "login verification",
+						"description": "firmwareId",
 						"required": true,
-						"type": "string",
-						"default": "Bearer "
+						"schema": {
+							"type": "string"
+						}
 					},
 					{
 						"name": "firmwareId",
@@ -625,60 +554,54 @@
 		"/operator/admin/fota/firmwares-page/{deviceTypes}": {
 			"get": {
 				"tags": [
-					"fota-controller"
+					"Operator Admin Fota"
 				],
 				"summary": "queryFirmwarePageList",
+				"description": "Query firmware list by page",
 				"operationId": "queryFirmwarePageListUsingGET",
 				"parameters": [
 					{
-						"name": "cookie",
-						"in": "header",
-						"description": "login verification",
-						"required": true,
-						"type": "string",
-						"default": "Bearer "
-					},
-					{
 						"name": "deviceTypes",
 						"in": "path",
-						"description": "deviceTypes",
+						"description": "device Type collection",
 						"required": true,
-						"type": "string"
+						"type": "string",
+						"x-example": "1,2,3"
 					},
 					{
 						"name": "firmwareVersion",
 						"in": "query",
-						"description": "firmwareVersion",
+						"description": "firmware Version",
 						"required": false,
 						"type": "string"
 					},
 					{
 						"name": "fotaProtocols",
 						"in": "query",
-						"description": "fotaProtocols",
+						"description": "fota Protocol collection",
 						"required": false,
 						"type": "string"
 					},
 					{
 						"name": "limit",
 						"in": "query",
-						"description": "limit",
+						"description": "row",
 						"required": true,
-						"type": "integer",
-						"format": "int32"
+						"type": "string",
+						"default": "10"
 					},
 					{
 						"name": "offset",
 						"in": "query",
-						"description": "offset",
+						"description": "page",
 						"required": true,
-						"type": "integer",
-						"format": "int32"
+						"type": "string",
+						"default": "0"
 					},
 					{
 						"name": "statuses",
 						"in": "query",
-						"description": "statuses",
+						"description": "status collection",
 						"required": false,
 						"type": "string"
 					}
@@ -687,7 +610,7 @@
 					"200": {
 						"description": "OK",
 						"schema": {
-							"$ref": "#/definitions/PaginationAdmFirmware"
+							"$ref": "#/definitions/Pagination«AdmFirmware»"
 						}
 					},
 					"401": {
@@ -706,23 +629,16 @@
 		"/operator/admin/fota/firmwares/{deviceTypes}": {
 			"get": {
 				"tags": [
-					"fota-controller"
+					"Operator Admin Fota"
 				],
 				"summary": "queryFirmwareList",
+				"description": "Get firmware list",
 				"operationId": "queryFirmwareListUsingGET",
 				"parameters": [
 					{
-						"name": "cookie",
-						"in": "header",
-						"description": "login verification",
-						"required": true,
-						"type": "string",
-						"default": "Bearer "
-					},
-					{
 						"name": "deviceTypes",
 						"in": "path",
-						"description": "deviceTypes",
+						"description": "Device type collection",
 						"required": true,
 						"type": "string"
 					}
@@ -753,20 +669,11 @@
 		"/operator/admin/fota/health": {
 			"get": {
 				"tags": [
-					"fota-controller"
+					"Operator Admin Fota"
 				],
 				"summary": "health",
+				"description": "Used to detect the running status of lambda",
 				"operationId": "healthUsingGET",
-				"parameters": [
-					{
-						"name": "cookie",
-						"in": "header",
-						"description": "login verification",
-						"required": true,
-						"type": "string",
-						"default": "Bearer "
-					}
-				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -790,25 +697,16 @@
 		"/operator/admin/fota/version": {
 			"get": {
 				"tags": [
-					"fota-controller"
+					"Operator Admin Fota"
 				],
 				"summary": "version",
+				"description": "Get the release version",
 				"operationId": "versionUsingGET",
-				"parameters": [
-					{
-						"name": "cookie",
-						"in": "header",
-						"description": "login verification",
-						"required": true,
-						"type": "string",
-						"default": "Bearer "
-					}
-				],
 				"responses": {
 					"200": {
 						"description": "OK",
 						"schema": {
-							"$ref": "#/definitions/Empty"
+							"type": "string"
 						}
 					},
 					"401": {
@@ -823,6 +721,13 @@
 				},
 				"deprecated": false
 			}
+		}
+	},
+	"securityDefinitions": {
+		"JSESSIONID": {
+			"type": "apiKey",
+			"name": "cookie",
+			"in": "header"
 		}
 	},
 	"definitions": {
@@ -1133,7 +1038,7 @@
 			},
 			"title": "OrderBy"
 		},
-		"PaginationAdmDevFotaDto": {
+		"Pagination«AdmDevFotaDto»": {
 			"type": "object",
 			"properties": {
 				"firstPage": {
@@ -1173,9 +1078,9 @@
 					"format": "int32"
 				}
 			},
-			"title": "PaginationAdmDevFotaDto"
+			"title": "Pagination«AdmDevFotaDto»"
 		},
-		"PaginationAdmFirmware": {
+		"Pagination«AdmFirmware»": {
 			"type": "object",
 			"properties": {
 				"firstPage": {
@@ -1215,7 +1120,7 @@
 					"format": "int32"
 				}
 			},
-			"title": "PaginationAdmFirmware"
+			"title": "Pagination«AdmFirmware»"
 		},
 		"ResponseEntity": {
 			"type": "object",
@@ -1276,6 +1181,7 @@
 						"422 UNPROCESSABLE_ENTITY",
 						"423 LOCKED",
 						"424 FAILED_DEPENDENCY",
+						"425 TOO_EARLY",
 						"426 UPGRADE_REQUIRED",
 						"428 PRECONDITION_REQUIRED",
 						"429 TOO_MANY_REQUESTS",
@@ -1380,10 +1286,6 @@
 				}
 			},
 			"title": "Timestamp"
-		},
-		"Empty": {
-			"title": "Empty",
-			"type": "object"
 		}
 	}
 }

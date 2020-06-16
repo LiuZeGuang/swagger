@@ -4,7 +4,7 @@
 		"version": "1.0",
 		"title": "Mass FOTA API"
 	},
-	"host": "dev.fleetup.cc",
+	"host": "localhost:8080",
 	"basePath": "/",
 	"tags": [
 		{
@@ -28,6 +28,13 @@
 					"application/json"
 				],
 				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Authorization",
+						"required": false,
+						"type": "string"
+					},
 					{
 						"in": "body",
 						"name": "fotaCommandList",
@@ -74,6 +81,13 @@
 				"operationId": "queryFotaStatusUsingGET",
 				"parameters": [
 					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Authorization",
+						"required": false,
+						"type": "string"
+					},
+					{
 						"name": "devId",
 						"in": "path",
 						"description": "Device id",
@@ -111,6 +125,13 @@
 					"application/json"
 				],
 				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Authorization",
+						"required": false,
+						"type": "string"
+					},
 					{
 						"name": "commandExpireDate",
 						"in": "query",
@@ -171,6 +192,15 @@
 				"summary": "getDeviceType",
 				"description": "Get device type list",
 				"operationId": "getDeviceTypeUsingGET",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Authorization",
+						"required": false,
+						"type": "string"
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -202,6 +232,15 @@
 				"summary": "queryFotaStatusList",
 				"description": "Get upgrade list",
 				"operationId": "queryFotaStatusListUsingGET",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Authorization",
+						"required": false,
+						"type": "string"
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -234,6 +273,13 @@
 				"description": "Fuzzy query device upgrade information list",
 				"operationId": "queryByCompNameOrFwVerUsingGET",
 				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Authorization",
+						"required": false,
+						"type": "string"
+					},
 					{
 						"name": "companyName",
 						"in": "query",
@@ -298,7 +344,7 @@
 					"200": {
 						"description": "OK",
 						"schema": {
-							"$ref": "#/definitions/Pagination«AdmDevFotaDto»"
+							"$ref": "#/definitions/PaginationAdmDevFotaDto"
 						}
 					},
 					"401": {
@@ -326,6 +372,13 @@
 					"application/json"
 				],
 				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Authorization",
+						"required": false,
+						"type": "string"
+					},
 					{
 						"in": "body",
 						"name": "admFirmwareCommand",
@@ -367,13 +420,22 @@
 				"summary": "queryFirmwareInfo",
 				"description": "Get the firmware list on S3",
 				"operationId": "queryFirmwareInfoUsingGET",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Authorization",
+						"required": false,
+						"type": "string"
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
 						"schema": {
 							"type": "array",
 							"items": {
-								"type": "string"
+								"$ref": "#/definitions/Empty"
 							}
 						}
 					},
@@ -400,11 +462,11 @@
 				"operationId": "queryFirmwareUsingGET",
 				"parameters": [
 					{
-						"description": "firmwareId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
+						"name": "Authorization",
+						"in": "header",
+						"description": "Authorization",
+						"required": false,
+						"type": "string"
 					},
 					{
 						"name": "firmwareId",
@@ -444,6 +506,13 @@
 					"application/json"
 				],
 				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Authorization",
+						"required": false,
+						"type": "string"
+					},
 					{
 						"name": "description",
 						"in": "query",
@@ -518,13 +587,13 @@
 				"summary": "downloadFirmware",
 				"description": "Download firmware based on firmware id",
 				"operationId": "downloadFirmwareUsingGET",
-				"parameters": [
+				"parameters": [				
 					{
-						"description": "firmwareId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
+						"name": "Authorization",
+						"in": "header",
+						"description": "Authorization",
+						"required": false,
+						"type": "string"
 					},
 					{
 						"name": "firmwareId",
@@ -560,6 +629,13 @@
 				"description": "Query firmware list by page",
 				"operationId": "queryFirmwarePageListUsingGET",
 				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Authorization",
+						"required": false,
+						"type": "string"
+					},
 					{
 						"name": "deviceTypes",
 						"in": "path",
@@ -610,7 +686,7 @@
 					"200": {
 						"description": "OK",
 						"schema": {
-							"$ref": "#/definitions/Pagination«AdmFirmware»"
+							"$ref": "#/definitions/PaginationAdmFirmware"
 						}
 					},
 					"401": {
@@ -635,6 +711,13 @@
 				"description": "Get firmware list",
 				"operationId": "queryFirmwareListUsingGET",
 				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Authorization",
+						"required": false,
+						"type": "string"
+					},
 					{
 						"name": "deviceTypes",
 						"in": "path",
@@ -674,6 +757,15 @@
 				"summary": "health",
 				"description": "Used to detect the running status of lambda",
 				"operationId": "healthUsingGET",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Authorization",
+						"required": false,
+						"type": "string"
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -702,11 +794,20 @@
 				"summary": "version",
 				"description": "Get the release version",
 				"operationId": "versionUsingGET",
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "Authorization",
+						"required": false,
+						"type": "string"
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
 						"schema": {
-							"type": "string"
+							"$ref": "#/definitions/Empty"
 						}
 					},
 					"401": {
@@ -721,13 +822,6 @@
 				},
 				"deprecated": false
 			}
-		}
-	},
-	"securityDefinitions": {
-		"cookieAuth": {
-			"type": "apiKey",
-			"name": "JSESSIONID",
-			"in": "header"
 		}
 	},
 	"definitions": {
@@ -1038,7 +1132,7 @@
 			},
 			"title": "OrderBy"
 		},
-		"Pagination«AdmDevFotaDto»": {
+		"PaginationAdmDevFotaDto": {
 			"type": "object",
 			"properties": {
 				"firstPage": {
@@ -1078,9 +1172,9 @@
 					"format": "int32"
 				}
 			},
-			"title": "Pagination«AdmDevFotaDto»"
+			"title": "PaginationAdmDevFotaDto"
 		},
-		"Pagination«AdmFirmware»": {
+		"PaginationAdmFirmware": {
 			"type": "object",
 			"properties": {
 				"firstPage": {
@@ -1120,7 +1214,7 @@
 					"format": "int32"
 				}
 			},
-			"title": "Pagination«AdmFirmware»"
+			"title": "PaginationAdmFirmware"
 		},
 		"ResponseEntity": {
 			"type": "object",
@@ -1286,6 +1380,10 @@
 				}
 			},
 			"title": "Timestamp"
-		}
+		},
+        "Empty": {
+            "type": "object",
+            "title": "Empty Schema"
+        }
 	}
 }

@@ -724,9 +724,9 @@
 		}
 	},
 	"securityDefinitions": {
-		"JSESSIONID": {
+		"cookie": {
 			"type": "apiKey",
-			"name": "cookie",
+			"name": "JSESSIONID",
 			"in": "header"
 		}
 	},

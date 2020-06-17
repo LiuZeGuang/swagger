@@ -1,18 +1,47 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.0",
-    "title": "Mass FOTA API"
+    "version": "2020-06-17T10:12:46Z",
+    "title": "FU Service"
   },
-  "host": "avfktgu3yg.execute-api.us-west-2.amazonaws.com",
-  "basePath": "/dev",
+  "host": "fuservice.fleetup.net",
+  "basePath": "/stress",
   "schemes": [
     "https"
   ],
   "paths": {
-    "/operator/admin/fota/device": {
-      "post": {
-        "operationId": "addFotaStatusUsingPOST",
+    "/device": {
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/device/mapping": {
+      "put": {
+        "description": "Update the mapping between the Senzit Device and the FleetUp Device",
         "consumes": [
           "application/json"
         ],
@@ -21,17 +50,11 @@
         ],
         "parameters": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "type": "string"
-          },
-          {
             "in": "body",
-            "name": "ArrayOfAdmDevFotaCommand",
+            "name": "UpdateSenzitFleetUpDeviceMappingReq",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/ArrayOfAdmDevFotaCommand"
+              "$ref": "#/definitions/UpdateSenzitFleetUpDeviceMappingReq"
             }
           }
         ],
@@ -39,271 +62,76 @@
           "200": {
             "description": "200 response",
             "schema": {
-              "$ref": "#/definitions/ResponseEntity"
+              "$ref": "#/definitions/Empty"
             }
-          },
-          "201": {
-            "description": "201 response"
-          },
-          "401": {
-            "description": "401 response"
-          },
-          "403": {
-            "description": "403 response"
-          },
-          "404": {
-            "description": "404 response"
           }
-        }
-      }
-    },
-    "/operator/admin/fota/device/{devId}": {
-      "get": {
-        "operationId": "queryFotaStatusUsingGET",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
+        },
+        "security": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "devId",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "FU_Authorizer": []
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/AdmDevFota"
-            }
-          },
-          "401": {
-            "description": "401 response"
-          },
-          "403": {
-            "description": "403 response"
-          },
-          "404": {
-            "description": "404 response"
-          }
-        }
+        ]
       },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/device/senzit": {
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/device/senzit/serial-name": {
       "put": {
-        "operationId": "updateFotaStatusUsingPUT",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "status",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "firmwareId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "commandExpireDate",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "devId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/ResponseEntity"
-            }
-          },
-          "201": {
-            "description": "201 response"
-          },
-          "401": {
-            "description": "401 response"
-          },
-          "403": {
-            "description": "403 response"
-          },
-          "404": {
-            "description": "404 response"
-          }
-        }
-      }
-    },
-    "/operator/admin/fota/deviceTypes": {
-      "get": {
-        "operationId": "getDeviceTypeUsingGET",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/ArrayOfStandardCode"
-            }
-          },
-          "401": {
-            "description": "401 response"
-          },
-          "403": {
-            "description": "403 response"
-          },
-          "404": {
-            "description": "404 response"
-          }
-        }
-      }
-    },
-    "/operator/admin/fota/devices": {
-      "get": {
-        "operationId": "queryFotaStatusListUsingGET",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/ArrayOfAdmDevFota"
-            }
-          },
-          "401": {
-            "description": "401 response"
-          },
-          "403": {
-            "description": "403 response"
-          },
-          "404": {
-            "description": "404 response"
-          }
-        }
-      }
-    },
-    "/operator/admin/fota/devices/{deviceTypes}": {
-      "get": {
-        "operationId": "queryByCompNameOrFwVerUsingGET",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "currentFirmware",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "deviceTypes",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "statuses",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "companyName",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "devId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "upgradingFirmware",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/PaginationAdmDevFotaDto"
-            }
-          },
-          "401": {
-            "description": "401 response"
-          },
-          "403": {
-            "description": "403 response"
-          },
-          "404": {
-            "description": "404 response"
-          }
-        }
-      }
-    },
-    "/operator/admin/fota/firmware": {
-      "post": {
-        "operationId": "addFirmwareUsingPOST",
+        "description": "Update the Serial name for the Senzit Device",
         "consumes": [
           "application/json"
         ],
@@ -312,17 +140,11 @@
         ],
         "parameters": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "type": "string"
-          },
-          {
             "in": "body",
-            "name": "AdmFirmwareCommand",
+            "name": "UpdateSerialNameReq",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/AdmFirmwareCommand"
+              "$ref": "#/definitions/UpdateSerialNameReq"
             }
           }
         ],
@@ -330,140 +152,56 @@
           "200": {
             "description": "200 response",
             "schema": {
-              "$ref": "#/definitions/ResponseEntity"
+              "$ref": "#/definitions/Empty"
             }
-          },
-          "201": {
-            "description": "201 response"
-          },
-          "401": {
-            "description": "401 response"
-          },
-          "403": {
-            "description": "403 response"
-          },
-          "404": {
-            "description": "404 response"
           }
-        }
-      }
-    },
-    "/operator/admin/fota/firmware-files": {
-      "get": {
-        "operationId": "queryFirmwareInfoUsingGET",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
+        },
+        "security": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "type": "string"
+            "FU_Authorizer": []
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/ArrayOfEmpty"
-            }
-          },
-          "401": {
-            "description": "401 response"
-          },
-          "403": {
-            "description": "403 response"
-          },
-          "404": {
-            "description": "404 response"
-          }
-        }
-      }
-    },
-    "/operator/admin/fota/firmware/{firmwareId}": {
-      "get": {
-        "operationId": "queryFirmwareUsingGET",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "firmwareId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/AdmFirmware"
-            }
-          },
-          "401": {
-            "description": "401 response"
-          },
-          "403": {
-            "description": "403 response"
-          },
-          "404": {
-            "description": "404 response"
-          }
-        }
+        ]
       },
-      "put": {
-        "operationId": "updateFirmwareUsingPUT",
+      "options": {
+        "description": "Update the serial name for a particular Senzit Device",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/device/senzit/{acctId}": {
+      "get": {
+        "description": "GET all the Senzit Device Info including Senzit Device Id, Vehicle Pairing Number, Load Percent, remaining filter time, serial Name",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "deviceTypes",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "description",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "firmwareStage",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "firmwareVersion",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "firmwareId",
+            "name": "acctId",
             "in": "path",
+            "description": "This is for getting the list of senzit devices based on the account id",
             "required": true,
             "type": "string"
           }
@@ -472,204 +210,46 @@
           "200": {
             "description": "200 response",
             "schema": {
-              "$ref": "#/definitions/ResponseEntity"
+              "$ref": "#/definitions/Empty"
             }
-          },
-          "201": {
-            "description": "201 response"
-          },
-          "401": {
-            "description": "401 response"
-          },
-          "403": {
-            "description": "403 response"
-          },
-          "404": {
-            "description": "404 response"
           }
-        }
-      }
-    },
-    "/operator/admin/fota/firmware/{firmwareId}/download": {
-      "get": {
-        "operationId": "downloadFirmwareUsingGET",
-        "produces": [
+        },
+        "security": [
+          {
+            "FU_Authorizer": []
+          }
+        ]
+      },
+      "options": {
+        "consumes": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "name": "firmwareId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response"
-          },
-          "401": {
-            "description": "401 response"
-          },
-          "403": {
-            "description": "403 response"
-          },
-          "404": {
-            "description": "404 response"
-          }
-        }
-      }
-    },
-    "/operator/admin/fota/firmwares-page/{deviceTypes}": {
-      "get": {
-        "operationId": "queryFirmwarePageListUsingGET",
         "produces": [
           "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "deviceTypes",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "fotaProtocols",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "statuses",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "firmwareVersion",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
         ],
         "responses": {
           "200": {
             "description": "200 response",
             "schema": {
-              "$ref": "#/definitions/PaginationAdmFirmware"
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
             }
-          },
-          "401": {
-            "description": "401 response"
-          },
-          "403": {
-            "description": "403 response"
-          },
-          "404": {
-            "description": "404 response"
           }
         }
       }
     },
-    "/operator/admin/fota/firmwares/{deviceTypes}": {
+    "/enterprise/health": {
       "get": {
-        "operationId": "queryFirmwareListUsingGET",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "deviceTypes",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/ArrayOfAdmFirmware"
-            }
-          },
-          "401": {
-            "description": "401 response"
-          },
-          "403": {
-            "description": "403 response"
-          },
-          "404": {
-            "description": "404 response"
-          }
-        }
-      }
-    },
-    "/operator/admin/fota/health": {
-      "get": {
-        "operationId": "healthUsingGET",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "schema": {
-              "$ref": "#/definitions/ResponseEntity"
-            }
-          },
-          "401": {
-            "description": "401 response"
-          },
-          "403": {
-            "description": "403 response"
-          },
-          "404": {
-            "description": "404 response"
-          }
-        }
-      }
-    },
-    "/operator/admin/fota/version": {
-      "get": {
-        "operationId": "versionUsingGET",
         "produces": [
           "application/json"
         ],
@@ -687,220 +267,3183 @@
             "schema": {
               "$ref": "#/definitions/Empty"
             }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/enterprise/inventories": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string"
           },
-          "401": {
-            "description": "401 response"
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": true,
+            "type": "string"
           },
-          "403": {
-            "description": "403 response"
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string"
           },
-          "404": {
-            "description": "404 response"
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/PaginatedInventoryDto"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/enterprise/inventory/detail": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "acctId",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceType",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/PaginatedInventoryDetailDto"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/enterprise/road-events": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "searchTripId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/PaginatedEventDto"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/enterprise/version": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/geocode": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "callerid",
+            "in": "query",
+            "description": "Please check 'Caller Id' tab in https://docs.google.com/spreadsheets/d/1Eg6lbbVF9crpQWLh3cSi_M7AKSh7wREyGExg8IC98-g/edit?ts=5d6055e5#gid=1575961744",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "description": "The numerical latitude value for which you wish to obtain the closest, human-readable address.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "description": "The numerical longitude value for which you wish to obtain the closest, human-readable address.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/GeocodeReq"
+            }
+          }
+        },
+        "security": [
+          {
+            "FU_Authorizer": []
+          }
+        ]
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ims": {
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ims/driver-routes": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "GetDriverRoutesReq",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetDriverRoutesReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "security": [
+          {
+            "FU_Authorizer": []
+          },
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "put": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "security": [
+          {
+            "FU_Authorizer": []
+          },
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ims/driver-routes-url": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "GetDriverRoutesUrlReq",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetDriverRoutesUrlReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "security": [
+          {
+            "FU_Authorizer": []
+          },
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ims/route-url": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ims/ticket-details": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "GetTicketDetailsReq",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetTicketDetailsReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "security": [
+          {
+            "FU_Authorizer": []
+          },
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map": {
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map/fenceutilization": {
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map/fenceutilization/{acctId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "acctId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "acctId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map/fenceutilization/{acctId}/{fenceId}": {
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map/fenceutilization/{acctId}/{fenceId}/{deviceType}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "acctId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fenceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceType",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map/online": {
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map/online/gps": {
+      "post": {
+        "description": "Get Gps Data by Device Id",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "MapOnlineGpsReq",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MapOnlineGpsReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/MapOnlineGpsRes"
+            }
+          }
+        },
+        "security": [
+          {
+            "FU_Authorizer": []
+          }
+        ]
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map/trip": {
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map/trip/info": {
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map/trip/info/rt": {
+      "post": {
+        "description": "Get realtime data like trip informstion, alerts and tSensor data for provided device Ids and Panic Device Ids",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "MapTripInfoRtReq",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MapTripInfoRtReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/MapTripInfoRtRes"
+            }
+          }
+        },
+        "security": [
+          {
+            "FU_Authorizer": []
+          }
+        ]
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map/trip/load": {
+      "post": {
+        "description": "Get MapTripInfo , alerts, and tSensors data for provided device ids",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "MapTripLoadReq",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MapTripLoadReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/MapTripLoadRes"
+            }
+          }
+        },
+        "security": [
+          {
+            "FU_Authorizer": []
+          }
+        ]
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/map/trip/single": {
+      "get": {
+        "description": "Get data like trip informstion, alerts and tSensor data for single device by provided Device Id and Panic Device Ids",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "MapTripSingleReq",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MapTripSingleReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/MapTripSingleRes"
+            }
+          }
+        },
+        "security": [
+          {
+            "FU_Authorizer": []
+          }
+        ]
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/operator": {
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/operator/group-info": {
+      "get": {
+        "description": "Get a list of OP Groups for the user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Empty",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/GroupInfoList"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "FU_Authorizer": []
+          }
+        ]
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/operator/roletype": {
+      "get": {
+        "description": "Get role type for Sub-OPTEST users",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/RoleType"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "FU_Authorizer": []
+          }
+        ]
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipment/accounts/{acctId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "acctId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Site"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipment/events": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "searchTripId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/PaginatedEventDto"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipment/health": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipment/jobs/end-trip": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "amount",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipment/site": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "acctId",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Site"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipment/sites": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfSite"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipment/sites/{siteNo}": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "radius",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lastUpdateTime.minutes",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lastUpdateTime.time",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "siteNo",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "color",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lastUpdateTime.day",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lastUpdateTime.hours",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lastUpdateTime.nanos",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pattern",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "points",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lastUpdateTime.date",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lastUpdateTime.seconds",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lastUpdateTime.month",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lastUpdateTime.timezoneOffset",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lastUpdateTime.year",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipment/trip": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "mainDeviceId",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "driverNationality",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "driverDateOfBirth",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "vehicleMake",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "driverFistName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "driverLastName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pairSmartLock",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vehicleYear",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vehiclePlateNo",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "driverPhoneNo",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "tripType",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vehicleChassisNo",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vehicleModel",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "desAcctId",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "shippingNo",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipment/trips": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "searchTripId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "acctId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/PaginatedShipmentDto"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipment/trips/{tripId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "tripId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/ShipmentInfoDto"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipment/trips/{tripId}/details": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "tripId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/PaginatedTripDetailDto"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipment/trips/{tripId}/end-trip": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "tripId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipment/version": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trip": {
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trip/alert/detail": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "TripAlertDetailReq",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TripAlertDetailReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        },
+        "security": [
+          {
+            "FU_Authorizer": []
+          }
+        ]
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            }
+          }
+        }
+      }
+    },
+    "/trip/vehicle": {
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trip/vehicle/query_trace_replay_data": {
+      "post": {
+        "description": "Returns trace replay data for specific device",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "VehicleQueryTraceReplayDataReq",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VehicleQueryTraceReplayDataReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/VehicleQueryTraceReplayDataRes"
+            }
+          }
+        },
+        "security": [
+          {
+            "FU_Authorizer": []
+          }
+        ]
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
           }
         }
       }
     }
   },
+  "securityDefinitions": {
+    "FU_Authorizer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "x-amazon-apigateway-authtype": "custom"
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "x-api-key",
+      "in": "header"
+    }
+  },
   "definitions": {
-    "AdmFirmware": {
+    "GetTicketDetailsReq": {
+      "type": "object",
+      "required": [
+        "driverID",
+        "transactionNo"
+      ],
+      "properties": {
+        "transactionNo": {
+          "type": "string"
+        },
+        "driverID": {
+          "type": "string"
+        }
+      },
+      "title": "GetTicketDetailsReq"
+    },
+    "InventoryDto": {
       "type": "object",
       "properties": {
-        "addBy": {
+        "acctId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "activated": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "alertDevIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assigned": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "autoAssignment": {
+          "type": "string"
+        },
+        "batteryAlert": {
+          "type": "string"
+        },
+        "deviceType": {
+          "type": "string"
+        },
+        "inUse": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "incoming": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "outOfUse": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "site": {
+          "type": "string"
+        },
+        "stock": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "InventoryDto"
+    },
+    "Site": {
+      "type": "object",
+      "properties": {
+        "acctId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "createBy": {
           "type": "integer",
           "format": "int64"
         },
         "createTime": {
           "$ref": "#/definitions/Timestamp"
         },
-        "creatorName": {
+        "fenceColor": {
           "type": "string"
         },
-        "description": {
-          "type": "string"
-        },
-        "deviceTypes": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "fileSize": {
+        "fencePattern": {
           "type": "integer",
           "format": "int32"
         },
-        "firmwareId": {
+        "fencePoints": {
           "type": "string"
         },
-        "firmwareLocation": {
+        "fenceRadius": {
           "type": "string"
         },
-        "firmwareStage": {
+        "lastUpdateBy": {
           "type": "integer",
-          "format": "int32"
-        },
-        "firmwareVersion": {
-          "type": "string"
-        },
-        "fotaProtocol": {
-          "type": "string"
+          "format": "int64"
         },
         "lastUpdateTime": {
           "$ref": "#/definitions/Timestamp"
         },
+        "lats": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "lngs": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "siteName": {
+          "type": "string"
+        },
+        "siteNo": {
+          "type": "string"
+        }
+      },
+      "title": "Site"
+    },
+    "GeocodeReq": {
+      "type": "object",
+      "required": [
+        "address",
+        "status"
+      ],
+      "properties": {
         "status": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "description": "Contains metadata on the request."
         },
-        "updateBy": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "updaterName": {
-          "type": "string"
+        "address": {
+          "type": "string",
+          "description": "A string containing the human-readable address of this location."
         }
       },
-      "title": "AdmFirmware"
+      "title": "GeocodeReq"
     },
-    "ArrayOfEmpty": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Empty"
-      }
-    },
-    "OrderBy": {
+    "MapTripSingleReq": {
       "type": "object",
+      "required": [
+        "devId",
+        "pdIds"
+      ],
       "properties": {
-        "order": {
-          "type": "string"
-        },
-        "sort": {
-          "type": "string"
-        }
-      },
-      "title": "OrderBy"
-    },
-    "ArrayOfAdmFirmware": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/AdmFirmware"
-      }
-    },
-    "AdmDevFota": {
-      "type": "object",
-      "properties": {
-        "commandExpireDate": {
-          "$ref": "#/definitions/Timestamp"
-        },
         "devId": {
-          "type": "string"
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 50
         },
-        "firmwareId": {
-          "type": "string"
-        },
-        "lastUpdateTime": {
-          "$ref": "#/definitions/Timestamp"
-        },
-        "messageCount": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "messageIndex": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "operateTime": {
-          "$ref": "#/definitions/Timestamp"
-        },
-        "operatedBy": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "startTime": {
-          "$ref": "#/definitions/Timestamp"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int32"
+        "pdIds": {
+          "type": "string",
+          "pattern": "^([0-9a-zA-Z]{5,50}){0,1}(,[0-9a-zA-Z]{5,50})*$"
         }
       },
-      "title": "AdmDevFota"
+      "title": "MapTripSingleReq"
     },
-    "AdmFirmwareCommand": {
+    "RoleType": {
       "type": "object",
       "properties": {
-        "addBy": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "createTime": {
-          "$ref": "#/definitions/Timestamp"
-        },
-        "description": {
+        "roleType": {
           "type": "string"
+        }
+      },
+      "title": "GroupInfoList",
+      "description": "Role type for Sub-OPTEST users"
+    },
+    "MapTripSingleRes": {
+      "type": "object",
+      "required": [
+        "alert",
+        "tSensor",
+        "trip"
+      ],
+      "properties": {
+        "trip": {
+          "type": "object",
+          "properties": {
+            "SEndTime": {
+              "type": "string"
+            },
+            "SStartTime": {
+              "type": "string"
+            },
+            "acconTime": {
+              "type": "number"
+            },
+            "alerts": {
+              "type": "number"
+            },
+            "dashcamId": {
+              "type": "string"
+            },
+            "devId": {
+              "type": "string"
+            },
+            "deviceType": {
+              "type": "number"
+            },
+            "direction": {
+              "type": "number"
+            },
+            "driverName": {
+              "type": "string"
+            },
+            "drivingHour": {
+              "type": "string"
+            },
+            "endLat": {
+              "type": "number"
+            },
+            "endLatLng": {
+              "type": "string"
+            },
+            "endLatLong": {
+              "type": "number"
+            },
+            "endLng": {
+              "type": "number"
+            },
+            "endLngLong": {
+              "type": "number"
+            },
+            "endLocation": {
+              "type": "string"
+            },
+            "endTime": {
+              "type": "number"
+            },
+            "gpsId": {
+              "type": "number"
+            },
+            "iconId": {
+              "type": "number"
+            },
+            "lat": {
+              "type": "number"
+            },
+            "license": {
+              "type": "string"
+            },
+            "lng": {
+              "type": "number"
+            },
+            "onLine": {
+              "type": "number"
+            },
+            "rpm": {
+              "type": "number"
+            },
+            "speed": {
+              "type": "number"
+            },
+            "startLat": {
+              "type": "number"
+            },
+            "startLatLng": {
+              "type": "string"
+            },
+            "startLatLong": {
+              "type": "number"
+            },
+            "startLng": {
+              "type": "number"
+            },
+            "startLngLong": {
+              "type": "number"
+            },
+            "startLocation": {
+              "type": "string"
+            },
+            "startTime": {
+              "type": "number"
+            },
+            "timeStamp": {
+              "type": "string"
+            },
+            "tmTime": {
+              "type": "number"
+            },
+            "tripMileage": {
+              "type": "number"
+            },
+            "tripMileageRV": {
+              "type": "string"
+            },
+            "tripStatus": {
+              "type": "number"
+            },
+            "trueRPM": {
+              "type": "number"
+            },
+            "trueSpeed": {
+              "type": "string"
+            },
+            "vehicleName": {
+              "type": "string"
+            },
+            "vehicleOrAsset": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "SEndTime",
+            "SStartTime",
+            "acconTime",
+            "alerts",
+            "dashcamId",
+            "devId",
+            "deviceType",
+            "direction",
+            "driverName",
+            "drivingHour",
+            "endLat",
+            "endLatLng",
+            "endLatLong",
+            "endLng",
+            "endLngLong",
+            "endLocation",
+            "endTime",
+            "gpsId",
+            "iconId",
+            "lat",
+            "license",
+            "lng",
+            "onLine",
+            "rpm",
+            "speed",
+            "startLat",
+            "startLatLng",
+            "startLatLong",
+            "startLng",
+            "startLngLong",
+            "startLocation",
+            "startTime",
+            "timeStamp",
+            "tmTime",
+            "tripMileage",
+            "tripMileageRV",
+            "tripStatus",
+            "trueRPM",
+            "trueSpeed",
+            "vehicleName",
+            "vehicleOrAsset"
+          ]
         },
-        "deviceTypes": {
-          "type": "string"
-        },
-        "fileSize": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "firmwareId": {
-          "type": "string"
-        },
-        "firmwareLocation": {
-          "type": "string"
-        },
-        "firmwareStage": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "firmwareVersion": {
-          "type": "string"
-        },
-        "fotaProtocol": {
-          "type": "string"
-        },
-        "lastUpdateTime": {
-          "$ref": "#/definitions/Timestamp"
-        },
-        "order": {
-          "type": "string"
-        },
-        "orders": {
+        "tSensor": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/OrderBy"
+            "type": "object",
+            "properties": {
+              "devId": {
+                "type": "string"
+              },
+              "battery": {
+                "type": "number"
+              },
+              "temperature": {
+                "type": "number"
+              },
+              "humidity": {
+                "type": "number"
+              },
+              "tmTime": {
+                "type": "string"
+              },
+              "unit": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "battery",
+              "devId",
+              "humidity",
+              "temperature",
+              "tmTime",
+              "unit"
+            ]
           }
         },
-        "page": {
+        "alert": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "acconTime": {
+                "type": "number"
+              },
+              "tmTime": {
+                "type": "number"
+              },
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              },
+              "alarmAddress": {
+                "type": "string"
+              },
+              "devId": {
+                "type": "string"
+              },
+              "license": {
+                "type": "string"
+              },
+              "timeStamp": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "acconTime",
+              "alarmAddress",
+              "devId",
+              "id",
+              "lat",
+              "license",
+              "lng",
+              "timeStamp",
+              "tmTime"
+            ]
+          }
+        }
+      },
+      "title": "MapTripSingleRes"
+    },
+    "PaginatedEventDto": {
+      "type": "object",
+      "properties": {
+        "firstPage": {
+          "type": "boolean"
+        },
+        "lastPage": {
+          "type": "boolean"
+        },
+        "nextPage": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageNo": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prePage": {
           "type": "integer",
           "format": "int32"
         },
         "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RoadEventDto"
+          }
+        },
+        "total": {
           "type": "integer",
           "format": "int32"
         },
-        "sort": {
+        "totalPage": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "PaginatedEventDto"
+    },
+    "RoadEventDto": {
+      "type": "object",
+      "properties": {
+        "battery": {
+          "type": "string"
+        },
+        "cableCut": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "charging": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "driver": {
+          "type": "string"
+        },
+        "idlingTime": {
+          "type": "string"
+        },
+        "noNetworkVisitTime": {
+          "type": "string"
+        },
+        "riskArea": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "shippingNo": {
+          "type": "string"
+        },
+        "siteNo": {
+          "type": "string"
+        },
+        "smartLock": {
+          "type": "string"
+        },
+        "speed": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "stopTime": {
+          "type": "string"
+        },
+        "tripId": {
+          "type": "string"
+        },
+        "tripType": {
+          "type": "string"
+        },
+        "unLock": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "unPairTime": {
+          "type": "string"
+        },
+        "unauthorizedRoute": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "unplugged": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "vehicle": {
+          "type": "string"
+        },
+        "visitTime": {
+          "type": "string"
+        }
+      },
+      "title": "RoadEventDto"
+    },
+    "UpdateSenzitFleetUpDeviceMappingReq": {
+      "type": "object",
+      "required": [
+        "deviceId",
+        "senzitDeviceId"
+      ],
+      "properties": {
+        "senzitDeviceId": {
+          "type": "string",
+          "minLength": 15,
+          "maxLength": 15
+        },
+        "deviceId": {
+          "type": "string",
+          "minLength": 15,
+          "maxLength": 15
+        }
+      },
+      "title": "UpdateSenzit_FleetUpDeviceMappingReq"
+    },
+    "InventoryDetailDto": {
+      "type": "object",
+      "properties": {
+        "batteryLevel": {
+          "type": "string"
+        },
+        "charging": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "destSiteName": {
+          "type": "string"
+        },
+        "deviceId": {
+          "type": "string"
+        },
+        "deviceType": {
+          "type": "string"
+        },
+        "geoFence": {
+          "type": "string"
+        },
+        "lastUpdateTime": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "latestTimestamp": {
+          "type": "string"
+        },
+        "location": {
           "type": "string"
         },
         "status": {
+          "type": "string"
+        },
+        "testResult": {
+          "type": "string"
+        }
+      },
+      "title": "InventoryDetailDto"
+    },
+    "PaginatedTripDetailDto": {
+      "type": "object",
+      "properties": {
+        "firstPage": {
+          "type": "boolean"
+        },
+        "lastPage": {
+          "type": "boolean"
+        },
+        "nextPage": {
           "type": "integer",
           "format": "int32"
         },
-        "updateBy": {
+        "pageNo": {
           "type": "integer",
-          "format": "int64"
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prePage": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TripDetailDto"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalPage": {
+          "type": "integer",
+          "format": "int32"
         }
       },
-      "title": "AdmFirmwareCommand"
-    },
-    "ArrayOfAdmDevFota": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/AdmDevFota"
-      }
+      "title": "PaginatedTripDetailDto"
     },
     "Timestamp": {
       "type": "object",
@@ -948,219 +3491,39 @@
       },
       "title": "Timestamp"
     },
-    "PaginationAdmDevFotaDto": {
+    "TripAlertDetailReq": {
       "type": "object",
+      "required": [
+        "alertType",
+        "deviceId",
+        "endDate",
+        "startDate"
+      ],
       "properties": {
-        "firstPage": {
-          "type": "boolean"
+        "deviceId": {
+          "type": "string",
+          "pattern": "^[0-9a-zA-Z]{5,50}$"
         },
-        "lastPage": {
-          "type": "boolean"
+        "startDate": {
+          "type": "string",
+          "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|1[0-9]|2[0-9]|3[01])/(19|20)[0-9]{2}$"
         },
-        "nextPage": {
-          "type": "integer",
-          "format": "int32"
+        "endDate": {
+          "type": "string",
+          "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|1[0-9]|2[0-9]|3[01])/(19|20)[0-9]{2}$"
         },
-        "pageNo": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "pageSize": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "prePage": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "rows": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/AdmDevFotaDto"
-          }
-        },
-        "total": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "totalPage": {
-          "type": "integer",
-          "format": "int32"
+        "alertType": {
+          "type": "string",
+          "pattern": "^[a-zA-Z]+$"
         }
       },
-      "title": "PaginationAdmDevFotaDto"
+      "title": "TripAlertDetails"
     },
     "Empty": {
       "type": "object",
       "title": "Empty Schema"
     },
-    "ResponseEntity": {
-      "type": "object",
-      "properties": {
-        "body": {
-          "type": "object",
-          "properties": {}
-        },
-        "statusCode": {
-          "type": "string",
-          "enum": [
-            "100 CONTINUE",
-            "101 SWITCHING_PROTOCOLS",
-            "102 PROCESSING",
-            "103 CHECKPOINT",
-            "200 OK",
-            "201 CREATED",
-            "202 ACCEPTED",
-            "203 NON_AUTHORITATIVE_INFORMATION",
-            "204 NO_CONTENT",
-            "205 RESET_CONTENT",
-            "206 PARTIAL_CONTENT",
-            "207 MULTI_STATUS",
-            "208 ALREADY_REPORTED",
-            "226 IM_USED",
-            "300 MULTIPLE_CHOICES",
-            "301 MOVED_PERMANENTLY",
-            "302 FOUND",
-            "302 MOVED_TEMPORARILY",
-            "303 SEE_OTHER",
-            "304 NOT_MODIFIED",
-            "305 USE_PROXY",
-            "307 TEMPORARY_REDIRECT",
-            "308 PERMANENT_REDIRECT",
-            "400 BAD_REQUEST",
-            "401 UNAUTHORIZED",
-            "402 PAYMENT_REQUIRED",
-            "403 FORBIDDEN",
-            "404 NOT_FOUND",
-            "405 METHOD_NOT_ALLOWED",
-            "406 NOT_ACCEPTABLE",
-            "407 PROXY_AUTHENTICATION_REQUIRED",
-            "408 REQUEST_TIMEOUT",
-            "409 CONFLICT",
-            "410 GONE",
-            "411 LENGTH_REQUIRED",
-            "412 PRECONDITION_FAILED",
-            "413 PAYLOAD_TOO_LARGE",
-            "413 REQUEST_ENTITY_TOO_LARGE",
-            "414 URI_TOO_LONG",
-            "414 REQUEST_URI_TOO_LONG",
-            "415 UNSUPPORTED_MEDIA_TYPE",
-            "416 REQUESTED_RANGE_NOT_SATISFIABLE",
-            "417 EXPECTATION_FAILED",
-            "418 I_AM_A_TEAPOT",
-            "419 INSUFFICIENT_SPACE_ON_RESOURCE",
-            "420 METHOD_FAILURE",
-            "421 DESTINATION_LOCKED",
-            "422 UNPROCESSABLE_ENTITY",
-            "423 LOCKED",
-            "424 FAILED_DEPENDENCY",
-            "425 TOO_EARLY",
-            "426 UPGRADE_REQUIRED",
-            "428 PRECONDITION_REQUIRED",
-            "429 TOO_MANY_REQUESTS",
-            "431 REQUEST_HEADER_FIELDS_TOO_LARGE",
-            "451 UNAVAILABLE_FOR_LEGAL_REASONS",
-            "500 INTERNAL_SERVER_ERROR",
-            "501 NOT_IMPLEMENTED",
-            "502 BAD_GATEWAY",
-            "503 SERVICE_UNAVAILABLE",
-            "504 GATEWAY_TIMEOUT",
-            "505 HTTP_VERSION_NOT_SUPPORTED",
-            "506 VARIANT_ALSO_NEGOTIATES",
-            "507 INSUFFICIENT_STORAGE",
-            "508 LOOP_DETECTED",
-            "509 BANDWIDTH_LIMIT_EXCEEDED",
-            "510 NOT_EXTENDED",
-            "511 NETWORK_AUTHENTICATION_REQUIRED"
-          ]
-        },
-        "statusCodeValue": {
-          "type": "integer",
-          "format": "int32"
-        }
-      },
-      "title": "ResponseEntity"
-    },
-    "ArrayOfAdmDevFotaCommand": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/AdmDevFotaCommand"
-      }
-    },
-    "AdmDevFotaCommand": {
-      "type": "object",
-      "properties": {
-        "commandExpireDate": {
-          "$ref": "#/definitions/Timestamp"
-        },
-        "currentFirmware": {
-          "type": "string"
-        },
-        "devId": {
-          "type": "string"
-        },
-        "deviceType": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "firmwareId": {
-          "type": "string"
-        },
-        "lastUpdateTime": {
-          "$ref": "#/definitions/Timestamp"
-        },
-        "messageCount": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "messageIndex": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "operateTime": {
-          "$ref": "#/definitions/Timestamp"
-        },
-        "operatedBy": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "order": {
-          "type": "string"
-        },
-        "orders": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/OrderBy"
-          }
-        },
-        "page": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "rows": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "sort": {
-          "type": "string"
-        },
-        "startTime": {
-          "$ref": "#/definitions/Timestamp"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int32"
-        }
-      },
-      "title": "AdmDevFotaCommand"
-    },
-    "ArrayOfStandardCode": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/StandardCode"
-      }
-    },
-    "PaginationAdmFirmware": {
+    "PaginatedInventoryDto": {
       "type": "object",
       "properties": {
         "firstPage": {
@@ -1188,7 +3551,7 @@
         "rows": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/AdmFirmware"
+            "$ref": "#/definitions/InventoryDto"
           }
         },
         "total": {
@@ -1200,98 +3563,1088 @@
           "format": "int32"
         }
       },
-      "title": "PaginationAdmFirmware"
+      "title": "PaginatedInventoryDto"
     },
-    "StandardCode": {
+    "UpdateSerialNameReq": {
       "type": "object",
+      "required": [
+        "serialName",
+        "serialNumber"
+      ],
       "properties": {
-        "comments": {
-          "type": "string"
+        "serialNumber": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10
         },
-        "displayOrder": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "externalCode": {
-          "type": "string"
-        },
-        "groupCode": {
-          "type": "string"
-        },
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "internalCode": {
-          "type": "string"
-        },
-        "language": {
-          "type": "string"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int32"
+        "serialName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 15
         }
       },
-      "title": "StandardCode"
+      "title": "UpdateSerialNameReq"
     },
-    "AdmDevFotaDto": {
+    "TripDetailDto": {
       "type": "object",
       "properties": {
-        "commandExpireDate": {
-          "$ref": "#/definitions/Timestamp"
-        },
-        "companyName": {
-          "type": "string"
-        },
-        "currentFirmware": {
-          "type": "string"
+        "acconTime": {
+          "type": "integer",
+          "format": "int64"
         },
         "devId": {
           "type": "string"
         },
-        "fotaProtocol": {
+        "drivingTime": {
           "type": "string"
         },
-        "lastUpdateTime": {
-          "$ref": "#/definitions/Timestamp"
+        "endLocation": {
+          "type": "string"
+        },
+        "endTime": {
+          "type": "string"
+        },
+        "fuelL": {
+          "type": "string"
+        },
+        "idleTime": {
+          "type": "string"
         },
         "license": {
           "type": "string"
         },
-        "messageCount": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "messageIndex": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "operateTime": {
-          "$ref": "#/definitions/Timestamp"
-        },
-        "operatedBy": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "operatorName": {
+        "milesKM": {
           "type": "string"
         },
-        "percentage": {
+        "mpgKML": {
+          "type": "string"
+        },
+        "startLocation": {
           "type": "string"
         },
         "startTime": {
-          "$ref": "#/definitions/Timestamp"
+          "type": "string"
         },
-        "status": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "upgradingFirmware": {
+        "stopTime": {
           "type": "string"
         }
       },
-      "title": "AdmDevFotaDto"
+      "title": "TripDetailDto"
+    },
+    "MapTripInfoRtRes": {
+      "type": "object",
+      "required": [
+        "alert",
+        "tSensor",
+        "trip"
+      ],
+      "properties": {
+        "trip": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "SEndTime": {
+                "type": "string"
+              },
+              "SStartTime": {
+                "type": "string"
+              },
+              "acconTime": {
+                "type": "number"
+              },
+              "alerts": {
+                "type": "number"
+              },
+              "dashcamId": {
+                "type": "string"
+              },
+              "devId": {
+                "type": "string"
+              },
+              "deviceType": {
+                "type": "number"
+              },
+              "direction": {
+                "type": "number"
+              },
+              "driverName": {
+                "type": "string"
+              },
+              "drivingHour": {
+                "type": "string"
+              },
+              "endLat": {
+                "type": "number"
+              },
+              "endLatLng": {
+                "type": "string"
+              },
+              "endLatLong": {
+                "type": "number"
+              },
+              "endLng": {
+                "type": "number"
+              },
+              "endLngLong": {
+                "type": "number"
+              },
+              "endLocation": {
+                "type": "string"
+              },
+              "endTime": {
+                "type": "number"
+              },
+              "gpsId": {
+                "type": "number"
+              },
+              "iconId": {
+                "type": "number"
+              },
+              "lat": {
+                "type": "number"
+              },
+              "license": {
+                "type": "string"
+              },
+              "lng": {
+                "type": "number"
+              },
+              "onLine": {
+                "type": "number"
+              },
+              "rpm": {
+                "type": "number"
+              },
+              "speed": {
+                "type": "number"
+              },
+              "startLat": {
+                "type": "number"
+              },
+              "startLatLng": {
+                "type": "string"
+              },
+              "startLatLong": {
+                "type": "number"
+              },
+              "startLng": {
+                "type": "number"
+              },
+              "startLngLong": {
+                "type": "number"
+              },
+              "startLocation": {
+                "type": "string"
+              },
+              "startTime": {
+                "type": "number"
+              },
+              "timeStamp": {
+                "type": "string"
+              },
+              "tmTime": {
+                "type": "number"
+              },
+              "tripMileage": {
+                "type": "number"
+              },
+              "tripMileageRV": {
+                "type": "string"
+              },
+              "tripStatus": {
+                "type": "number"
+              },
+              "trueRPM": {
+                "type": "number"
+              },
+              "trueSpeed": {
+                "type": "string"
+              },
+              "vehicleName": {
+                "type": "string"
+              },
+              "vehicleOrAsset": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "SEndTime",
+              "SStartTime",
+              "acconTime",
+              "alerts",
+              "dashcamId",
+              "devId",
+              "deviceType",
+              "direction",
+              "driverName",
+              "drivingHour",
+              "endLat",
+              "endLatLng",
+              "endLatLong",
+              "endLng",
+              "endLngLong",
+              "endLocation",
+              "endTime",
+              "gpsId",
+              "iconId",
+              "lat",
+              "license",
+              "lng",
+              "onLine",
+              "rpm",
+              "speed",
+              "startLat",
+              "startLatLng",
+              "startLatLong",
+              "startLng",
+              "startLngLong",
+              "startLocation",
+              "startTime",
+              "timeStamp",
+              "tmTime",
+              "tripMileage",
+              "tripMileageRV",
+              "tripStatus",
+              "trueRPM",
+              "trueSpeed",
+              "vehicleName",
+              "vehicleOrAsset"
+            ]
+          }
+        },
+        "tSensor": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "devId": {
+                "type": "string"
+              },
+              "battery": {
+                "type": "number"
+              },
+              "temperature": {
+                "type": "number"
+              },
+              "humidity": {
+                "type": "number"
+              },
+              "tmTime": {
+                "type": "string"
+              },
+              "unit": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "battery",
+              "devId",
+              "humidity",
+              "temperature",
+              "tmTime",
+              "unit"
+            ]
+          }
+        },
+        "alert": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "acconTime": {
+                "type": "number"
+              },
+              "tmTime": {
+                "type": "number"
+              },
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              },
+              "alarmAddress": {
+                "type": "string"
+              },
+              "devId": {
+                "type": "string"
+              },
+              "license": {
+                "type": "string"
+              },
+              "timeStamp": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "acconTime",
+              "alarmAddress",
+              "devId",
+              "id",
+              "lat",
+              "license",
+              "lng",
+              "timeStamp",
+              "tmTime"
+            ]
+          }
+        }
+      },
+      "title": "MapTripInfoRtRes"
+    },
+    "MapTripInfoRtReq": {
+      "type": "object",
+      "required": [
+        "devIds",
+        "panicDevIds"
+      ],
+      "properties": {
+        "devIds": {
+          "type": "string",
+          "pattern": "^[0-9a-zA-Z]{5,50}(,[0-9a-zA-Z]{5,50})*$"
+        },
+        "panicDevIds": {
+          "type": "string",
+          "pattern": "^([0-9a-zA-Z]{5,50}){0,1}(,[0-9a-zA-Z]{5,50})*$"
+        }
+      },
+      "title": "MapTripInfoRtReq"
+    },
+    "ShipmentInfoDto": {
+      "type": "object",
+      "properties": {
+        "destAcctId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "driverDateOfBirth": {
+          "type": "string"
+        },
+        "driverFistName": {
+          "type": "string"
+        },
+        "driverLastName": {
+          "type": "string"
+        },
+        "driverNationality": {
+          "type": "string"
+        },
+        "driverPhoneNo": {
+          "type": "string"
+        },
+        "lockDevId": {
+          "type": "string"
+        },
+        "mainDevId": {
+          "type": "string"
+        },
+        "shippingNo": {
+          "type": "string"
+        },
+        "srcAcctId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "tripId": {
+          "type": "string"
+        },
+        "tripType": {
+          "type": "string"
+        },
+        "vehicleChassisNo": {
+          "type": "string"
+        },
+        "vehicleMake": {
+          "type": "string"
+        },
+        "vehicleModel": {
+          "type": "string"
+        },
+        "vehiclePlateNo": {
+          "type": "string"
+        },
+        "vehicleYear": {
+          "type": "string"
+        }
+      },
+      "title": "ShipmentInfoDto"
+    },
+    "ArrayOfSite": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Site"
+      }
+    },
+    "PaginatedShipmentDto": {
+      "type": "object",
+      "properties": {
+        "firstPage": {
+          "type": "boolean"
+        },
+        "lastPage": {
+          "type": "boolean"
+        },
+        "nextPage": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageNo": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prePage": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ShipmentDto"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalPage": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "PaginatedShipmentDto"
+    },
+    "GroupInfoList": {
+      "title": "GroupInfoList",
+      "type": "array",
+      "description": "A list of OP Groups",
+      "items": {
+        "type": "object",
+        "properties": {
+          "opgroupId": {
+            "type": "integer"
+          },
+          "opgroupName": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "MapTripLoadReq": {
+      "type": "object",
+      "required": [
+        "devIds"
+      ],
+      "properties": {
+        "devIds": {
+          "type": "string",
+          "pattern": "^[0-9a-zA-Z]{5,50}(,[0-9a-zA-Z]{5,50})*$"
+        }
+      },
+      "title": "MapTripLoadReq"
+    },
+    "MapTripLoadRes": {
+      "type": "object",
+      "required": [
+        "alert",
+        "tSensor",
+        "trip"
+      ],
+      "properties": {
+        "trip": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "SEndTime": {
+                "type": "string"
+              },
+              "SStartTime": {
+                "type": "string"
+              },
+              "acconTime": {
+                "type": "number"
+              },
+              "alerts": {
+                "type": "number"
+              },
+              "dashcamId": {
+                "type": "string"
+              },
+              "devId": {
+                "type": "string"
+              },
+              "deviceType": {
+                "type": "number"
+              },
+              "direction": {
+                "type": "number"
+              },
+              "driverName": {
+                "type": "string"
+              },
+              "drivingHour": {
+                "type": "string"
+              },
+              "endLat": {
+                "type": "number"
+              },
+              "endLatLng": {
+                "type": "string"
+              },
+              "endLatLong": {
+                "type": "number"
+              },
+              "endLng": {
+                "type": "number"
+              },
+              "endLngLong": {
+                "type": "number"
+              },
+              "endLocation": {
+                "type": "string"
+              },
+              "endTime": {
+                "type": "number"
+              },
+              "gpsId": {
+                "type": "number"
+              },
+              "iconId": {
+                "type": "number"
+              },
+              "lat": {
+                "type": "number"
+              },
+              "license": {
+                "type": "string"
+              },
+              "lng": {
+                "type": "number"
+              },
+              "onLine": {
+                "type": "number"
+              },
+              "rpm": {
+                "type": "number"
+              },
+              "speed": {
+                "type": "number"
+              },
+              "startLat": {
+                "type": "number"
+              },
+              "startLatLng": {
+                "type": "string"
+              },
+              "startLatLong": {
+                "type": "number"
+              },
+              "startLng": {
+                "type": "number"
+              },
+              "startLngLong": {
+                "type": "number"
+              },
+              "startLocation": {
+                "type": "string"
+              },
+              "startTime": {
+                "type": "number"
+              },
+              "timeStamp": {
+                "type": "string"
+              },
+              "tmTime": {
+                "type": "number"
+              },
+              "tripMileage": {
+                "type": "number"
+              },
+              "tripMileageRV": {
+                "type": "string"
+              },
+              "tripStatus": {
+                "type": "number"
+              },
+              "trueRPM": {
+                "type": "number"
+              },
+              "trueSpeed": {
+                "type": "string"
+              },
+              "vehicleName": {
+                "type": "string"
+              },
+              "vehicleOrAsset": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "SEndTime",
+              "SStartTime",
+              "acconTime",
+              "alerts",
+              "dashcamId",
+              "devId",
+              "deviceType",
+              "direction",
+              "driverName",
+              "drivingHour",
+              "endLat",
+              "endLatLng",
+              "endLatLong",
+              "endLng",
+              "endLngLong",
+              "endLocation",
+              "endTime",
+              "gpsId",
+              "iconId",
+              "lat",
+              "license",
+              "lng",
+              "onLine",
+              "rpm",
+              "speed",
+              "startLat",
+              "startLatLng",
+              "startLatLong",
+              "startLng",
+              "startLngLong",
+              "startLocation",
+              "startTime",
+              "timeStamp",
+              "tmTime",
+              "tripMileage",
+              "tripMileageRV",
+              "tripStatus",
+              "trueRPM",
+              "trueSpeed",
+              "vehicleName",
+              "vehicleOrAsset"
+            ]
+          }
+        },
+        "tSensor": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "devId": {
+                "type": "string"
+              },
+              "battery": {
+                "type": "number"
+              },
+              "temperature": {
+                "type": "number"
+              },
+              "humidity": {
+                "type": "number"
+              },
+              "tmTime": {
+                "type": "string"
+              },
+              "unit": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "battery",
+              "devId",
+              "humidity",
+              "temperature",
+              "tmTime",
+              "unit"
+            ]
+          }
+        },
+        "alert": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "acconTime": {
+                "type": "number"
+              },
+              "tmTime": {
+                "type": "number"
+              },
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              },
+              "alarmAddress": {
+                "type": "string"
+              },
+              "devId": {
+                "type": "string"
+              },
+              "license": {
+                "type": "string"
+              },
+              "timeStamp": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "acconTime",
+              "alarmAddress",
+              "devId",
+              "id",
+              "lat",
+              "license",
+              "lng",
+              "timeStamp",
+              "tmTime"
+            ]
+          }
+        }
+      },
+      "title": "MapTripLoadRes"
+    },
+    "GetDriverRoutesUrlReq": {
+      "type": "object",
+      "required": [
+        "driverID"
+      ],
+      "properties": {
+        "driverID": {
+          "type": "string"
+        }
+      },
+      "title": "GetDriverRoutesUrlReq"
+    },
+    "ShipmentDto": {
+      "type": "object",
+      "properties": {
+        "alertCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "childDev": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "devId": {
+          "type": "string"
+        },
+        "driver": {
+          "type": "string"
+        },
+        "endTime": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "endTrip": {
+          "type": "string"
+        },
+        "idleTime": {
+          "type": "string"
+        },
+        "lockStatus": {
+          "type": "string"
+        },
+        "mileage": {
+          "type": "string"
+        },
+        "shippingNo": {
+          "type": "string"
+        },
+        "smartLock": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "startTime": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "startTrip": {
+          "type": "string"
+        },
+        "tripHours": {
+          "type": "string"
+        },
+        "tripId": {
+          "type": "string"
+        },
+        "tripType": {
+          "type": "string"
+        },
+        "vehicle": {
+          "type": "string"
+        }
+      },
+      "title": "ShipmentDto"
+    },
+    "PaginatedInventoryDetailDto": {
+      "type": "object",
+      "properties": {
+        "firstPage": {
+          "type": "boolean"
+        },
+        "lastPage": {
+          "type": "boolean"
+        },
+        "nextPage": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageNo": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prePage": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/InventoryDetailDto"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalPage": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "PaginatedInventoryDetailDto"
+    },
+    "VehicleQueryTraceReplayDataRes": {
+      "type": "object",
+      "required": [
+        "alarmData",
+        "endLocation",
+        "endTimeText",
+        "startLocation",
+        "startTimeText",
+        "traceData"
+      ],
+      "properties": {
+        "startLocation": {
+          "type": "string"
+        },
+        "endLocation": {
+          "type": "string"
+        },
+        "startTimeText": {
+          "type": "string"
+        },
+        "endTimeText": {
+          "type": "string"
+        },
+        "alarmData": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "time": {
+                "type": "number"
+              },
+              "localTimeTxt": {
+                "type": "string"
+              },
+              "alarmType": {
+                "type": "number"
+              },
+              "alarmName": {
+                "type": "string"
+              },
+              "alarmValue": {
+                "type": "number"
+              },
+              "strAlarmValue": {
+                "type": "string"
+              },
+              "fenceId": {
+                "type": "string"
+              },
+              "dataType": {
+                "type": "number"
+              },
+              "latitude": {
+                "type": "number"
+              },
+              "longitude": {
+                "type": "number"
+              },
+              "location": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "alarmName",
+              "alarmType",
+              "alarmValue",
+              "dataType",
+              "latitude",
+              "localTimeTxt",
+              "location",
+              "longitude",
+              "strAlarmValue",
+              "time"
+            ]
+          }
+        },
+        "traceData": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tmTime": {
+                "type": "string"
+              },
+              "tmTimeTxt": {
+                "type": "string"
+              },
+              "speed": {
+                "type": "number"
+              },
+              "direction": {
+                "type": "string"
+              },
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              },
+              "dataPoint": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "dataPoint",
+              "direction",
+              "lat",
+              "lng",
+              "speed",
+              "tmTimeTxt"
+            ]
+          }
+        }
+      },
+      "title": "VehicleQueryTraceReplayDataRes"
+    },
+    "VehicleQueryTraceReplayDataReq": {
+      "type": "object",
+      "required": [
+        "acconTime",
+        "devId",
+        "endDate",
+        "startDate"
+      ],
+      "properties": {
+        "devId": {
+          "type": "string"
+        },
+        "acconTime": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "string"
+        },
+        "endDate": {
+          "type": "string"
+        }
+      },
+      "title": "VehicleQueryTraceReplayDataReq"
+    },
+    "MapOnlineGpsRes": {
+      "type": "object",
+      "required": [
+        "gpsDatas"
+      ],
+      "properties": {
+        "gpsDatas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              },
+              "direction": {
+                "type": "number"
+              },
+              "devId": {
+                "type": "string"
+              },
+              "acconTime": {
+                "type": "number"
+              },
+              "sortOrder": {
+                "type": "string"
+              },
+              "onLine": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "acconTime",
+              "devId",
+              "direction",
+              "lat",
+              "lng",
+              "onLine",
+              "sortOrder"
+            ]
+          }
+        }
+      },
+      "title": "MapOnlineGpsRes"
+    },
+    "GetDriverRoutesReq": {
+      "type": "object",
+      "required": [
+        "driverID"
+      ],
+      "properties": {
+        "driverID": {
+          "type": "string"
+        }
+      },
+      "title": "GetDriverRoutesReq"
+    },
+    "MapOnlineGpsReq": {
+      "type": "object",
+      "required": [
+        "devId"
+      ],
+      "properties": {
+        "devId": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 50
+        }
+      },
+      "title": "MapOnlineGpsReq"
     }
   }
 }
